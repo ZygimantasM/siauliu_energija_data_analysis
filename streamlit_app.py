@@ -8,12 +8,15 @@ import pydeck as pdk
 
 st.set_page_config(layout="wide")
 
-st.header('Data Analysis of AB "Siauliu Energija"')
-
+st.markdown(
+        "<h1 style='font-size: 62px; text-align: center;'>Data Analysis of AB \"Šiaulių Energija\"</h1>",
+        unsafe_allow_html=True
+    )
 sidebar = st.sidebar
 sidebar.header("Settings")
-res_side = sidebar.selectbox("Select category", ("Heat, kWh", "Hot water, m³"), placeholder="Heat", key=47)
-tab1, tab2, tab3, tab4 = st.tabs(["Overall Consumption Trends", "Trends by building function", "Rooms data", "Geospatial Data"])
+res_side = sidebar.selectbox("Select category", ("Heat, kWh", "Hot water, m³"), placeholder="Heat", key=48)
+lang = sidebar.selectbox("Language / Kalba", ("English", "Lietuvių"), placeholder="English", key=47)
+tab1, tab2, tab3, tab4 = st.tabs(["Overall Consumption Trends", "Trends by building function", "Rooms data", "Machine Learning Predictions"])
 with tab1:
     st.markdown(
     "<h1 style='text-align: center;'>Energy Consumption Trends</h1>",
@@ -169,8 +172,50 @@ with tab2:
 
     
 with tab3:
-    #-------------------------------------------------
-    # rooms per buyer
+
+    col7, col8 = st.columns(2)
+    with col7:
+        st.markdown(
+        "<h1 style='font-size: 48px; text-align: center;'>No. Unique rooms</h1>",
+        unsafe_allow_html=True
+    )
+        st.markdown(
+        "<h1 style='font-size: 72px; text-align: center;'>44900</h1>",
+        unsafe_allow_html=True
+    )
+        area_df = pd.read_csv("area_df.csv")
+        st.header("Average heat consumption per square meter against area size")
+
+        chart = alt.Chart(area_df).mark_bar().encode(
+            x=alt.X("area_bins:N", sort="-y"),
+            y="eff:Q",
+        )
+        st.altair_chart(chart, use_container_width=True)
+    with col8:
+        st.markdown(
+        "<h1 style='font-size: 48px; text-align: center;'>No. Unique buildings</h1>",
+        unsafe_allow_html=True
+    )
+        st.markdown(
+        "<h1 style='font-size: 72px; text-align: center;'>1421</h1>",
+        unsafe_allow_html=True
+    )
+        st.markdown(
+        "<h1 style='font-size: 48px; text-align: center;'>Average room area</h1>",
+        unsafe_allow_html=True
+    )
+        st.markdown(
+        "<h1 style='font-size: 72px; text-align: center;'>71.6 m^2</h1>",
+        unsafe_allow_html=True
+    )
+        st.markdown(
+        "<h1 style='font-size: 48px; text-align: center;'>Biggest room area</h1>",
+        unsafe_allow_html=True
+    )
+        st.markdown(
+        "<h1 style='font-size: 72px; text-align: center;'>40760 m^2</h1>",
+        unsafe_allow_html=True
+    )
     st.write("### Number of rooms per buyer, top 20")
     buyer_rooms = pd.read_csv("buyer_rooms.csv")
     st.bar_chart(buyer_rooms["room_id"])
@@ -183,17 +228,10 @@ with tab3:
     st.write("Over time we can see that heat consumption decreases as buildings get younger, which can be attributed to better technology, heat insulation maybe")
     st.bar_chart(heat_by_build_year, x="build_year", y="eff")
     #------------------------------------------------------------------
-    area_df = pd.read_csv("area_df.csv")
-    st.header("Average heat consumption per square meter against area size")
+    st.write("# Oldest building was built in -- 1849")
+    st.write("# Most frequent build year -- 1970 (1924 buildings)")
 
-    chart = alt.Chart(area_df).mark_bar().encode(
-        x=alt.X("area_bins:N", sort="-y"),
-        y="eff:Q",
-    )
-    st.altair_chart(chart, use_container_width=True)
-with tab4:
-    
-    st.header("Geospatial building age heatmap")
+    st.write("## Geospatial building age heatmap")
 
     geo_build = pd.read_csv("geo_build.csv")
     geo_build = geo_build[geo_build["build_year"] > 1900]
@@ -225,48 +263,11 @@ with tab4:
             
         ],
     )
-
     )
-    st.markdown(
-        """
-        <style>
-        .legend {
-            background-color: white;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            z-index: 1000;
-            color: black; 
-        }
-        .legend div {
-            display: flex;
-            align-items: center;
-            margin-bottom: 5px;
-        }
-        .legend div div {
-            width: 20px;
-            height: 20px;
-            margin-right: 5px;
-        }
-        </style>
+    st.write("# Median amount of floors per building -- 5 Floors")
+    st.write("# Highest building -- 15 floors")
 
-        <div class="legend">
-            <b>Legend</b><br>
-            <div>
-                <div style="background-color: rgba(0, 128, 128, 1);"></div>Old
-            </div>
-            <div>
-                <div style="background-color: rgba(144, 238, 144, 1);"></div>New
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-    st.header("Geospatial building floors heatmap")
+    st.write("## Geospatial building floors heatmap")
 
     geo_floors = pd.read_csv("geo_floors.csv")
     st.pydeck_chart(
@@ -293,3 +294,8 @@ with tab4:
         ],
     )
     )
+
+with tab4:
+    st.write("br")
+    
+    
