@@ -44,7 +44,15 @@ lt_mappings = {
     "# Highest building -- 15 floors": "# Aukščiausias pastatas -- 15 aukštų",
     "## Geospatial building floors heatmap": "## Geografinis pastatų aukštų šiluminis žemėlapis",
     "Heat, kWh": "Šiluma, kWh",
-    "Hot water, m³": "Karštas vanduo, m³"
+    "Hot water, m³": "Karštas vanduo, m³",
+    "Date": "Data",
+    "Year": "Metai",
+    "No. Services": "Skaičius paslaugų",
+    "Building Function": "Pastato funkcija",
+    "Room Area, m²": "Patalpos Plotas, m²",
+    "Individual buyers": "Individualūs pirkėjai",
+    "No. Rooms": "Skaičius patalpų",
+    "Build Year": "Statybos metai"
 
 }
 
@@ -96,7 +104,7 @@ with tab1:
             "Karštas vanduo, m³": "Karštas vanduo"
         }
         res_lt = opt[res_side]
-        st.line_chart(monthly_trend, x="Date", y=res_lt, y_label=res_side)
+        st.line_chart(monthly_trend, x="Date", y=res_lt, y_label=res_side, x_label = trans("Date"), color="#fcaa01")
         
     with col2:
         st.markdown(
@@ -107,7 +115,7 @@ with tab1:
         # Yearly trend data
         monthly_trend = pd.read_csv("yearly_trend.csv")
         res_lt = opt[res_side]
-        st.bar_chart(monthly_trend, x="year", y=res_lt, y_label=res_side, x_label="Year")
+        st.bar_chart(monthly_trend, x="year", y=res_lt, y_label=res_side, x_label=trans("Year"),color= "#fcaa01")
         #------------------------------------------------
     st.markdown(
     f"<h1 style='text-align: center;'>{trans("Number Of Provided Services")}</h1>",
@@ -122,7 +130,7 @@ with tab1:
             f"<h3 style='text-align: center;'>{trans("Monthly")}</h1>",
             unsafe_allow_html=True
         )
-        st.line_chart(contract_trend, x="month", y="0", y_label="No. services", x_label="Date")
+        st.line_chart(contract_trend, x="month", y="0", y_label=trans("No. Services"), x_label=trans("Date"), color="#fcaa01")
     with col4:
         #------------------------------------------------
         # Contracts yearly trend
@@ -131,7 +139,7 @@ with tab1:
             f"<h3 style='text-align: center;'>{trans("Yearly")}</h1>",
             unsafe_allow_html=True
         )
-        st.bar_chart(contract_trend, x="year", y="0", x_label="Year", y_label="No. Services")
+        st.bar_chart(contract_trend, x="year", y="0", x_label=trans("Year"), y_label=trans("No. Services"), color="#fcaa01")
         #----------------------------------------------
     st.markdown(
     f"<h1 style='text-align: center;'>{trans("Consumption Heatmap")}</h1>",
@@ -198,8 +206,9 @@ with tab2:
         )
         func_df = pd.read_csv("func_df.csv")
         bar_chart = alt.Chart(func_df).mark_bar().encode(
-        y=alt.Y('building_func:N', sort='-x', title='Building Function'),
-        x=alt.X('eff:Q', title="kWh / m²")
+        y=alt.Y('building_func:N', sort='-x', title=trans('Building Function')),
+        x=alt.X('eff:Q', title="kWh / m²"),
+        color=alt.value("#fcaa01")
         ).properties(height=600
         )
         st.altair_chart(bar_chart, use_container_width=True)
@@ -208,8 +217,13 @@ with tab2:
     heat_cons_by_func = pd.read_csv("heat_cons_by_func.csv")
     wat_cons_by_func = pd.read_csv("wat_cons_by_func.csv")
     st.write(trans("### Yearly Consumption trend by building function"))
-
-    res_lt = opt[res_side]
+    opt_csv = {
+            'Heat, kWh': heat_cons_by_func,
+            'Hot water, m³': wat_cons_by_func,
+            "Šiluma, kWh": heat_cons_by_func,
+            "Karštas vanduo, m³": wat_cons_by_func
+        }
+    res_lt = opt_csv[res_side]
 
     df_melted = res_lt.melt(id_vars=['year'], var_name='Category', value_name='Value')
 
@@ -240,8 +254,9 @@ with tab3:
         st.header(trans("Average Heat Consumption / m² against Room Area"))
 
         chart = alt.Chart(area_df).mark_bar().encode(
-            x=alt.X("area_bins:N", sort="-y", title="Room Area, m²"),
-            y=alt.Y("eff:Q", title="kWh / m²")
+            x=alt.X("area_bins:N", sort="-y", title=trans("Room Area, m²")),
+            y=alt.Y("eff:Q", title="kWh / m²"),
+            color=alt.value("#fcaa01")
         )
         st.altair_chart(chart, use_container_width=True)
     with col8:
@@ -271,7 +286,7 @@ with tab3:
     )
     st.write(trans("## Number of Rooms per buyer, Top 20 buyers"))
     buyer_rooms = pd.read_csv("buyer_rooms.csv")
-    st.bar_chart(buyer_rooms["room_id"], x_label="Individual buyers", y_label="No. Rooms")
+    st.bar_chart(buyer_rooms["room_id"], x_label=trans("Individual buyers"), y_label=trans("No. Rooms"), color="#fcaa01")
 
     #-------------------------------------------
     # Consumption by building year
@@ -279,7 +294,7 @@ with tab3:
     heat_by_build_year = pd.read_csv("heat_by_build_year.csv")
     st.write(trans("## Average Heat Consumption / m² by buildings build year"))
     st.write(trans("Over time we can see that heat consumption decreases as buildings get younger, which can be attributed to better construction and insulation technology. Specifically buildings built after 1940 and then 2000 have lower consumption heat consumption on average"))
-    st.bar_chart(heat_by_build_year, x="build_year", y="eff", y_label="kWh / m²", x_label="Build Year")
+    st.bar_chart(heat_by_build_year, x="build_year", y="eff", y_label="kWh / m²", x_label=trans("Build Year"), color="#fcaa01")
     #------------------------------------------------------------------
     st.write(trans("# Oldest building was built in -- 1849"))
     st.write(trans("# Most frequent build year -- 1970 (1924 buildings)"))
