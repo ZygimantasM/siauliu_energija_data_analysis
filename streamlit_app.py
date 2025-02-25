@@ -5,6 +5,9 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 import altair as alt
 import pydeck as pdk
+from helper_funcs import get_prediction
+from streamlit_folium import st_folium
+import folium
 
 st.set_page_config(layout="wide")
 
@@ -78,7 +81,7 @@ st.markdown(
 
 
 
-tab1, tab2, tab3, tab4 = st.tabs([trans("Overall Consumption Trends"), trans("Trends By Building Function"), trans("Rooms Data"), trans("Machine Learning Predictions")])
+tab1, tab2, tab3, tab4 = st.tabs([trans("Overall Consumption Trends"), trans("Trends By Building Function"), trans("Rooms Data"), trans("AI Consumption Estimation Tool")])
 with tab1:
     st.markdown(
     f"<h1 style='text-align: center;'>{trans("Energy Consumption Trends")}</h1>",
@@ -364,6 +367,104 @@ with tab3:
     )
 
 with tab4:
-    st.write("br")
+    # Initialize features in Session State if not already present
+    if "features" not in st.session_state:
+        st.session_state.features = {
+            "legal_entity": False,
+            "month": 1,
+            "room_area": 50.0,
+            "build_year": 1971,
+            "building_floors": 5,
+            "building_func": 'Gyvenamasis (trijų ir daugiau butų - daugiaaukštis pastatas)',
+            "x_coord": 456969.719985,
+            "y_coord": 6199673.340395
+        }
+
+    features = st.session_state.features
+    # Title of the web app
+    st.title("AI Energy consumption estimation tool")
+    st.markdown("### How to use the tool?")
+    st.markdown("Use the displayed sliders and input boxes to select the various metrics of the room, which helps the AI model give an accurate prediction. In order to select the coordinates of where the room is located, simply click on the map on the location of the relevant building, the map can be dragged around and zoomed in/out. The month of the year field specifies for which month of the year to predict energy consumption. If the number `6` is supplied, the energy consumption will be calculated for the month of june. Lastly, in order to get an estimation simply click the button below that says `Predict Energy Consumption`. After waiting a second for the model to finish calculations, a field should appear below the button, with the predictions for heat and hot water consumed for that month. More information about the AI model is at the bottom of the page")
+    # Input fields using columns for a more compact layout
+    st.markdown("### Please enter the required information")
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        features["legal_entity"] = st.checkbox("Is the buyer a legal entity?")
+        features["building_floors"] = st.slider("Number of floors in the building", min_value=1, max_value=15, step=1, value=5)
+        features["room_area"] = st.number_input(
+            "Room area, m²", 
+            min_value=0.0, 
+            max_value=40000.0, 
+            value=50.0,  # Default value from session state
+            step=10.0, 
+            format="%.1f"  # Display with 1 decimal place
+        )
+
+        
+
+    with col2:
+        features["build_year"] = st.number_input("Year that the building was built", min_value=1849, step=1, value=1970)
+        features["month"] = st.number_input("Month of the year (1-12)", min_value=1, max_value=12, step=1)
+        features["building_func"] = st.selectbox("Building function", ['Transporto','Maitinimo','Gyvenamasis (individualus pastatas)','Gydymo',
+'Religinės' ,'Kita' ,'Administracinė', 'Kultūros' ,'Gamybos' ,'Gyvenamasis (trijų ir daugiau butų - daugiaaukštis pastatas)', 'Prekybos', 'Sporto', 'Komercinės paskirties', 'Mokslo' ,'Viešbučių', 'Sandėliavimo'])
+
+    with col3:
+        from pyproj import Transformer
+        transformer = Transformer.from_crs('epsg:4326', 'epsg:3346', always_xy=True)
+        st.subheader("Select Coordinates")
+        map_center = [55.9292, 23.3102]
+        map = folium.Map(location=map_center, zoom_start=12)
+        #-
+        marker = folium.Marker(location=map_center)
+        map.add_child(marker)
+
+        click = folium.LatLngPopup()
+        map.add_child(click)
+
+        map_data = st_folium(map, height=300, width=300)
+
+        x_coord, y_coord = map_center[0], map_center[1]
+        if map_data and 'last_clicked' in map_data and map_data['last_clicked']:
+            x_coord, y_coord = map_data['last_clicked']['lat'], map_data['last_clicked']['lng']
+            x_coord, y_coord = transformer.transform(y_coord, x_coord)
+            features["x_coord"] = x_coord
+            features["y_coord"] = y_coord
     
-    
+    st.markdown("""
+        <style>
+        div.stButton > button:first-child {
+            height: 3em;
+            width: 100%;
+            font-size: 20px;
+            margin-top: 20px;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    # Center the button and make prediction
+    if st.button("Predict Energy Consumption"):
+        preds_heat = get_prediction([features.values()])
+        preds_wat = get_prediction([features.values()], "xgb_wat_v1.sav", "column_transformer_wat.pkl")
+        
+        # Display results in a styled container
+        st.markdown("""
+            <div style='background-color: #f8f9fa; padding: 20px; border-radius: 10px; margin-top: 20px;'>
+                <h3 style='color: #2c3e50;'>Prediction Results</h3>
+                <div style='display: flex; justify-content: space-between;'>
+                    <div style='background-color: #e8f5e9; padding: 15px; border-radius: 8px; width: 48%;'>
+                        <h4 style='color: #2ecc71; margin: 0;'>Heat Consumption</h4>
+                        <p style='font-size: 24px; color: #2ecc71; margin: 5px 0 0 0;'>{:.2f} kWh / month</p>
+                    </div>
+                    <div style='background-color: #e3f2fd; padding: 15px; border-radius: 8px; width: 48%;'>
+                        <h4 style='color: #3498db; margin: 0;'>Water Consumption</h4>
+                        <p style='font-size: 24px; color: #3498db; margin: 5px 0 0 0;'>{:.2f} m³ / month</p>
+                    </div>
+                </div>
+            </div>
+        """.format(float(preds_heat), float(preds_wat)), unsafe_allow_html=True)
+    st.markdown("### Technical description of the AI model")
+    st.markdown("""
+    ### 1. The data
+    The data used to train the model was procured from
+    """)
