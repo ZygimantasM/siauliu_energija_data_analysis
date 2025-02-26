@@ -14,6 +14,7 @@ st.set_page_config(layout="wide")
 sidebar = st.sidebar
 sidebar.header("Settings / Nustatymai")
 
+
 lang = sidebar.selectbox("Language / Kalba", ("English", "Lietuvių"), placeholder="English", key=47)
 
 lt_mappings = {
@@ -55,7 +56,54 @@ lt_mappings = {
     "Room Area, m²": "Patalpos Plotas, m²",
     "Individual buyers": "Individualūs pirkėjai",
     "No. Rooms": "Skaičius patalpų",
-    "Build Year": "Statybos metai"
+    "Build Year": "Statybos metai",
+    "AI Consumption Estimation Tool": "DI Energijos suvartojimo įrankis",
+    "Heat Consumption Forecast Using SARIMA": "Šilumos suvartojimo prognozė naudojant SARIMA",
+    """In this analysis, we employ a sophisticated statistical tool known as SARIMA—Seasonal Autoregressive Integrated Moving Average—to forecast the trajectory of heat consumption over the next three years. This model allows us to capture both seasonal patterns and long-term trends in the data, providing a reliable prediction of how heat consumption might evolve.
+        The regions shaded in red on the graph illustrate the upper and lower bounds of the prediction error for the forecast.
+        These areas represent the range within which the actual heat consumption values are likely to fall.""": "Šioje analizėje mes naudojame sudėtingą statistinį įrankį, vadinamą SARIMA (Seasonal Autoregressive Integrated Moving Average), kad prognozuotume šilumos suvartojimo tendencijas per ateinančius trejus metus. Šis modelis leidžia mums užfiksuoti tiek sezoninius dėsningumus, tiek ilgalaikes duomenų tendencijas, teikdamas patikimą prognozę apie tai, kaip gali kisti šilumos vartojimas. Grafike raudonai pažymėtos sritys iliustruoja prognozės klaidos viršutines ir apatines ribas. Šios sritys rodo diapazoną, kuriame tikėtina, kad bus faktinės šilumos suvartojimo vertės.",
+    "Red color - Higher consumption area, Yellow - Lower consumption area": "Raudona spalva - Didesnio suvartojimo sritis, Geltona - Mažesnio suvartojimo sritis",
+    "From the graph above we can see that as the room area increases the average heat consumption per square meter actually decreases, meaning it is more efficient to provide heating for larger rooms rather than smaller ones.": "Iš grafiko aukščiau matome, kad didėjant kambario plotui, vidutinis šilumos suvartojimas kvadratiniam metrui iš tikrųjų mažėja, tai reiškia, kad efektyviau yra šildyti didesnius kambarius, o ne mažesnius.",
+    "From this bar chart, we can see that a few buyers possess hundreds of rooms, but we can’t identify who they are because the data about the buyers in the dataset is anonymized.": "Iš šio stulpelinio diagramos matome, kad keli pirkėjai turi šimtus kambarių, tačiau mes negalime nustatyti, kas jie yra, nes pirkėjų duomenys duomenų rinkinyje yra anonimizuoti.",
+    "Green color means newer buildings, blue is older buildings": "Žalia spalva reiškia naujesnius pastatus, mėlyna - senesnius pastatus.",
+    "Red color means higher buildings with more floors, blue are lower buildings with less floors": "Raudona spalva reiškia aukštesnius pastatus su daugiau aukštų, mėlyna - žemesnius pastatus su mažiau aukštų.",
+    "AI Energy consumption estimation tool": "DI Energijos suvartojimo įrankis",
+    "How to use the tool?": "Kaip nauduotis šį įrankį?",
+    "Use the displayed sliders and input boxes to select the various metrics of the room, which helps the AI model give an accurate prediction. In order to select the coordinates of where the room is located, simply click on the map on the location of the relevant building, the map can be dragged around and zoomed in/out. The month of the year field specifies for which month of the year to predict energy consumption. If the number `6` is supplied, the energy consumption will be calculated for the month of june. Lastly, in order to get an estimation simply click the button below that says `Predict Energy Consumption`. After waiting a second for the model to finish calculations, a field should appear below the button, with the predictions for heat and hot water consumed for that month. More information about the AI model is at the bottom of the page": "Naudokite rodiklius rodančius slankiklius ir įvesties laukelius, kad pasirinktumėte įvairius kambario parametrus, kas padės AI modeliui pateikti tikslią prognozę. Norėdami pasirinkti koordinates, kur yra kambarys, tiesiog spustelėkite žemėlapį atitinkamo pastato vietoje, žemėlapį galima vilkti ir priartinti/tolinti. Metų mėnesio laukas nurodo, kuriam mėnesiui prognozuoti energijos suvartojimą. Jei įvedamas skaičius `6`, energijos suvartojimas bus apskaičiuotas birželio mėnesiui. Galiausiai, norėdami gauti apskaičiavimą, tiesiog spustelėkite žemiau esantį mygtuką, kuris sako `Prognozuoti energijos suvartojimą`. Palaukus sekundę, kol modelis baigs skaičiavimus, po mygtuku turėtų atsirasti laukas su šilumos ir karšto vandens suvartojimo prognozėmis tam mėnesiui. Daugiau informacijos apie DI modelį yra puslapio apačioje.",
+    "<strong>Note:</strong> The AI predicts heat consumption in kWh with an average error of about 100 kWh, based on historical data. Results may vary depending on real-world conditions. The average error for hot water consumption is ~1 m³.": "<strong>Pastaba:</strong> DI prognozuoja šilumos suvartojimą kWh su vidutine klaida apie 100 kWh, remiantis istoriniais duomenimis. Rezultatai gali skirtis priklausomai nuo realių sąlygų. Vidutinė klaida karšto vandens suvartojimui yra apie 1 m³.",
+    "Please enter the required information": "Prašome įvesti reikiamą informaciją",
+    "Number of floors in the building": "Aukštų skaičius pastate",
+    "Room area, m²": "Kambario plotas, m²",
+    "Year that the building was built": "Pastato statybos metai",
+    "Building function": "Pastato funkcija",
+    "Select Coordinates": "Pasirinkti koordinates",
+    "Is the buyer a legal entity?": "Ar pirkėjas yra juridinis asmuo?",
+    "Predict Energy Consumption": "Prognozuoti energijos suvartojimą",
+    "Month of the year (1-12)": "Metų mėnuo (1-12)",
+    "Prediction Results": "Prognozės rezultatai",
+    "Heat Consumption": "Šilumos suvartojimas",
+    "Hot Water Consumption": "Karšto vandens suvartojimas",
+    "month": "mėn",
+    "Technical description of the AI model": "Techninis DI modelio aprašymas",
+    "The data": "Duomenys",
+    "The model": "DI modelis",
+    "Evaluation": "DI modelio įvertinimas",
+    "The data used to train the model was sourced from Lithuania's open data portal, data.gov.lt, and includes records up to 2025. Preparing the data for modeling required extensive preprocessing. For instance, geographical coordinates needed to be converted from one system to another. Additionally, the dataset contained multiple records for the same room and time period under a specific service category, such as 'heat', though another column provided more detailed classifications. Since these records shared the same units, I aggregated them by summing their values. This reduced, for example, five separate entries for a single room and time period into one consolidated figure, which the model then predicts.": "Modeliui mokyti naudoti duomenys buvo gauti iš Lietuvos atvirų duomenų portalo data.gov.lt ir apima įrašus iki 2025 metų. Ruošiant duomenis modeliavimui, reikėjo atlikti išsamią išankstinį duomenų apdorojimą. Pavyzdžiui, geografines koordinatės reikėjo konvertuoti iš vienos sistemos į kitą. Be to, duomenų rinkinyje buvo daug įrašų apie tą patį kambarį ir laikotarpį pagal tam tikrą paslaugų kategoriją, pavyzdžiui, 'šiluma', nors kitame stulpelyje buvo pateikiami išsamesnės kategorijos. Kadangi šie įrašai buvo pateikti tokiais pačiais vienetais, aš juos sujungiau, sudėdamas jų reikšmes. Tai leido, pavyzdžiui, penkis atskirus įrašus apie vieną kambarį ir laikotarpį sujungti į vieną konsoliduotą skaičių, kurį prognozavo modelis.",
+    "For this tool, I employed an XGBoost model, which leverages Gradient Boosted Decision Trees. While I considered alternative models, my experience—particularly from data science competitions on Kaggle—has shown that libraries like XGBoost and CatBoost often deliver top-tier performance for tabular datasets. This made XGBoost a confident choice. The model is both efficient and lightweight. During training, its hyperparameters were optimized using Optuna, a widely recognized industry-standard library.": "Šiam įrankiui naudojau XGBoost modelį, kuris naudoja Gradientinio stiprinimo sprendimų medžius. Nors svarsčiau alternatyvius modelius, mano patirtis iš duomenų mokslų varžybų Kaggle platformoje parodė, kad bibliotekos, tokios kaip XGBoost ir CatBoost, dažnai suteikia aukščiausio lygio našumą dirbant su duomeninimis lentelės formatu. Tai padarė XGBoost patikimu pasirinkimu. Modelis yra tiek efektyvus, tiek mažas. Mokymosi metu modelio parametrai buvo optimizuoti naudojant Optuna -- plačiai pripažintą biblioteką.",
+    "The model’s performance was assessed using two metrics: Mean Absolute Error (MAE) and Root Mean Squared Error (RMSE). Across the test set, the MAE for heat consumption is 140 kWh, indicating an average prediction error of about 140 kWh. However, this figure is somewhat inflated by extreme values where the model’s predictions deviate significantly. For most samples, the average error is closer to 90 kWh, with some predictions as accurate as 15, 30, or 50 kWh off. Generally, larger predicted values correlate with larger errors, likely due to the scarcity of high-energy-consumption samples in the dataset. This skews the heat consumption feature heavily. While these high values could be considered outliers, they are not errors, so I opted to retain them. The RMSE, at around 800 kWh, confirms that the model struggles more with outliers, as expected.": "Modelio našumas buvo vertinamas naudojant dvi metrikas: vidutinę absoliučią klaidą (MAE) ir kvadratinės vidutinės klaidos šaknį (RMSE). Testo rinkinyje šilumos suvartojimui vidutinė absoliuti klaida (MAE) yra 140 kWh, kas parodo jog modelis vidutiniškai klysta apie 140 kWh. Tačiau šis skaičius yra šiek tiek padidintas dėl ekstremalių reikšmių, dėl kurių modelio prognozės reikšmingai nukrypsta. Daugeliui mėginių vidutinė klaida yra artimesnė 90 kWh, kai kurioms prognozėms, model klysta tik 15, 30 ar 50 kWh. Paprastai didesnės prognozuojamos reikšmės koreliuoja su didesne paklaida, greičiausiai dėl trūkumo aukšto energijos suvartojimo pavyzdžių duomenų rinkinyje. Nors šias aukštas vertes būtų galima laikyti nukrypusiais duomenų taškais, jos nėra klaidos, todėl nusprendžiau jas palikti. Kvadratinės vidutinės klaidos šaknis (RMSE) yra maždaug 800 kWh. Tai patvirtina, kad modeliui yra sunkiau tiksliai nuspėti aukštesnes vertes",
+    "The model excels at predicting heat consumption in kWh but performs poorly with hot water consumption. Its MAE for hot water prediction is approximately 1 m³, meaning it errs by about 1 cubic meter on average. This larger error makes sense, as hot water consumption is inherently harder to predict than heat consumption. Given this limitation, I’d advise against deploying the model for hot water predictions in a production environment.": "Modelis puikiai prognozuoja šilumos suvartojimą kWh, tačiau prastai veikia su karšto vandens suvartojimo prognozę. Modelio paklaida karšto vandens prognozėms yra maždaug 1 m³, tai reiškia, kad vidutiniškai jis klysta apie 1 kubinį metrą. Ši didesnė klaida nenustebina, nes karšto vandens suvartojimą numatyti iš esmės yra sunkiau nei šilumos suvartojimą. Atsižvelgiant į šį apribojimą, rekomenduočiau nenaudoti modelį karšto vandens prognozėms gamybos aplinkoje.",
+    "Below is a sample from the test set used to evaluate the model. It compares actual values from the dataset with the AI’s predictions, showcasing impressive results, especially for heat consumption. In some cases, the model is off by 300 kWh or 50 kWh, while in others, it’s spot-on with a difference of 0 kWh. The Actual column reflects the real values the AI aims to match, the Preds column displays the AI’s predictions, and the Diff column indicates the difference between them, revealing the model’s error in units.": "Žemiau pateiktas pavyzdys iš testo rinkinio, kuris buvo naudojamas modelio vertinimui. Jis lygina faktines reikšmes iš duomenų rinkinio su DI prognozėmi. Iš šio pavyzdžio matosi įspūdingi rezultatai, ypač šilumos suvartojimo atveju. Kai kuriais atvejais modelis klaidingai nukrypsta 300 kWh arba tik 50 kWh, o kitais atvejais jis visiškai tiksliai progrnozuoja su beveik 0 kWh nuokrypa. Stulpelis „Actual“ atspindi realias reikšmes, kurias DI siekia atspėti, stulpelis „Preds“ rodo DI prognozes, o stulpelis „Diff“ rodo skirtumą tarp prognozės ir tiesos, parodantis kiek nuklydo modelis vienetais",
+    "Socials": "Socialiniai tinklai"
+
+
+
+
+
+
+
+    
+
+
 
 }
 
@@ -66,7 +114,30 @@ def trans(text, lang=lang):
         return lt_mappings[text]
 
 res_side = sidebar.selectbox(trans("Select Category"), (trans("Heat, kWh"), trans("Hot water, m³")), placeholder="Heat", key=48)
-
+spacer = st.sidebar.empty()
+with spacer.container():
+    st.markdown("<div style='height: 25vh;'></div>", unsafe_allow_html=True)
+sidebar.title(trans("Socials"))
+sidebar.markdown('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">', unsafe_allow_html=True)
+sidebar.markdown(
+    """
+    <div style="background-color: #ffffff; border-radius: 15px; padding: 15px; display: flex; flex-direction: column; gap: 10px;">
+        <a href="https://x.com/zygimantasmk" target="_blank" style="text-decoration: none; color: #000000;">
+            <i class="fa-brands fa-x-twitter"></i> X
+        </a>
+        <a href="https://github.com/ZygimantasM" target="_blank" style="text-decoration: none; color: #333;">
+            <i class="fab fa-github"></i> GitHub
+        </a>
+        <a href="https://www.linkedin.com/in/zygimantasmickavicius/" target="_blank" style="text-decoration: none; color: #0077B5;">
+            <i class="fab fa-linkedin"></i> LinkedIn
+        </a>
+        <a href="https://www.kaggle.com/zygmuntyt" target="_blank" style="text-decoration: none; color: #20bffe;">
+            <i class="fab fa-kaggle"></i> Kaggle
+        </a>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 st.markdown(
         f"<h1 style='font-size: 62px; text-align: center;'>{trans("Data Analysis of AB \"Šiaulių Energija\"")}</h1>",
         unsafe_allow_html=True
@@ -145,10 +216,21 @@ with tab1:
         st.bar_chart(contract_trend, x="year", y="0", x_label=trans("Year"), y_label=trans("No. Services"), color="#fcaa01")
         #----------------------------------------------
     st.markdown(
+    f"<h1 style='text-align: center;'>{trans("Heat Consumption Forecast Using SARIMA")}</h1>",
+    unsafe_allow_html=True
+    )
+    
+    cols1, cols2, cols3 = st.columns([1, 8, 1])  # Adjust the ratios to center as needed
+    with cols2:
+        st.markdown(trans("""In this analysis, we employ a sophisticated statistical tool known as SARIMA—Seasonal Autoregressive Integrated Moving Average—to forecast the trajectory of heat consumption over the next three years. This model allows us to capture both seasonal patterns and long-term trends in the data, providing a reliable prediction of how heat consumption might evolve.
+        The regions shaded in red on the graph illustrate the upper and lower bounds of the prediction error for the forecast.
+        These areas represent the range within which the actual heat consumption values are likely to fall."""))
+        st.image("image.png", use_container_width=True, caption="Centered Image")
+    st.markdown(
     f"<h1 style='text-align: center;'>{trans("Consumption Heatmap")}</h1>",
     unsafe_allow_html=True
     )
-
+   
     opt_csv = {
             'Heat, kWh': 'geo_amount_heat.csv',
             'Hot water, m³': 'geo_amount_wat.csv',
@@ -161,6 +243,7 @@ with tab1:
 
     # Create the slider with the list of dates as options
     st.write(trans("## Select date to view"))
+    st.write(trans("Red color - Higher consumption area, Yellow - Lower consumption area"))
     res_date = st.select_slider(" ", options=date_range, value=datetime(2019, 1, 1))
     res_date = str(res_date.date())
     geo_amount = pd.read_csv(res_csv)
@@ -287,9 +370,13 @@ with tab3:
         "<h1 style='font-size: 72px; text-align: center;'>40760 m²</h1>",
         unsafe_allow_html=True
     )
+
+    st.write(trans("From the graph above we can see that as the room area increases the average heat consumption per square meter actually decreases, meaning it is more efficient to provide heating for larger rooms rather than smaller ones."))
     st.write(trans("## Number of Rooms per buyer, Top 20 buyers"))
+    st.write(trans("From this bar chart, we can see that a few buyers possess hundreds of rooms, but we can’t identify who they are because the data about the buyers in the dataset is anonymized."))
     buyer_rooms = pd.read_csv("buyer_rooms.csv")
     st.bar_chart(buyer_rooms["room_id"], x_label=trans("Individual buyers"), y_label=trans("No. Rooms"), color="#fcaa01")
+    
 
     #-------------------------------------------
     # Consumption by building year
@@ -303,7 +390,7 @@ with tab3:
     st.write(trans("# Most frequent build year -- 1970 (1924 buildings)"))
 
     st.write(trans("## Geospatial building age heatmap"))
-
+    st.write(trans("Green color means newer buildings, blue is older buildings"))
     geo_build = pd.read_csv("geo_build.csv")
     geo_build = geo_build[geo_build["build_year"] > 1900]
     st.pydeck_chart(
@@ -339,7 +426,7 @@ with tab3:
     st.write(trans("# Highest building -- 15 floors"))
 
     st.write(trans("## Geospatial building floors heatmap"))
-
+    st.write(trans("Red color means higher buildings with more floors, blue are lower buildings with less floors"))
     geo_floors = pd.read_csv("geo_floors.csv")
     st.pydeck_chart(
     pdk.Deck(
@@ -382,18 +469,24 @@ with tab4:
 
     features = st.session_state.features
     # Title of the web app
-    st.title("AI Energy consumption estimation tool")
-    st.markdown("### How to use the tool?")
-    st.markdown("Use the displayed sliders and input boxes to select the various metrics of the room, which helps the AI model give an accurate prediction. In order to select the coordinates of where the room is located, simply click on the map on the location of the relevant building, the map can be dragged around and zoomed in/out. The month of the year field specifies for which month of the year to predict energy consumption. If the number `6` is supplied, the energy consumption will be calculated for the month of june. Lastly, in order to get an estimation simply click the button below that says `Predict Energy Consumption`. After waiting a second for the model to finish calculations, a field should appear below the button, with the predictions for heat and hot water consumed for that month. More information about the AI model is at the bottom of the page")
+    st.title(trans("AI Energy consumption estimation tool"))
+    st.markdown(f"### {trans("How to use the tool?")}")
+    st.markdown(trans("Use the displayed sliders and input boxes to select the various metrics of the room, which helps the AI model give an accurate prediction. In order to select the coordinates of where the room is located, simply click on the map on the location of the relevant building, the map can be dragged around and zoomed in/out. The month of the year field specifies for which month of the year to predict energy consumption. If the number `6` is supplied, the energy consumption will be calculated for the month of june. Lastly, in order to get an estimation simply click the button below that says `Predict Energy Consumption`. After waiting a second for the model to finish calculations, a field should appear below the button, with the predictions for heat and hot water consumed for that month. More information about the AI model is at the bottom of the page"))
+
+    st.markdown(f"""
+    <div style='background-color: #fff3cd; padding: 10px; border-radius: 5px; border: 1px solid #ffeeba; color: #856404;'>
+        {trans("<strong>Note:</strong> The AI predicts heat consumption in kWh with an average error of about 100 kWh, based on historical data. Results may vary depending on real-world conditions. The average error for hot water consumption is ~1 m³.")}
+    </div>
+    """, unsafe_allow_html=True)
     # Input fields using columns for a more compact layout
-    st.markdown("### Please enter the required information")
+    st.markdown(f"### {trans("Please enter the required information")}")
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        features["legal_entity"] = st.checkbox("Is the buyer a legal entity?")
-        features["building_floors"] = st.slider("Number of floors in the building", min_value=1, max_value=15, step=1, value=5)
+        features["legal_entity"] = st.checkbox(trans("Is the buyer a legal entity?"))
+        features["building_floors"] = st.slider(trans("Number of floors in the building"), min_value=1, max_value=15, step=1, value=5)
         features["room_area"] = st.number_input(
-            "Room area, m²", 
+            trans("Room area, m²"), 
             min_value=0.0, 
             max_value=40000.0, 
             value=50.0,  # Default value from session state
@@ -404,15 +497,15 @@ with tab4:
         
 
     with col2:
-        features["build_year"] = st.number_input("Year that the building was built", min_value=1849, step=1, value=1970)
-        features["month"] = st.number_input("Month of the year (1-12)", min_value=1, max_value=12, step=1)
-        features["building_func"] = st.selectbox("Building function", ['Transporto','Maitinimo','Gyvenamasis (individualus pastatas)','Gydymo',
+        features["build_year"] = st.number_input(trans("Year that the building was built"), min_value=1849, step=1, value=1970)
+        features["month"] = st.number_input(trans("Month of the year (1-12)"), min_value=1, max_value=12, step=1)
+        features["building_func"] = st.selectbox(trans("Building function"), ['Transporto','Maitinimo','Gyvenamasis (individualus pastatas)','Gydymo',
 'Religinės' ,'Kita' ,'Administracinė', 'Kultūros' ,'Gamybos' ,'Gyvenamasis (trijų ir daugiau butų - daugiaaukštis pastatas)', 'Prekybos', 'Sporto', 'Komercinės paskirties', 'Mokslo' ,'Viešbučių', 'Sandėliavimo'])
 
     with col3:
         from pyproj import Transformer
         transformer = Transformer.from_crs('epsg:4326', 'epsg:3346', always_xy=True)
-        st.subheader("Select Coordinates")
+        st.subheader(trans("Select Coordinates"))
         map_center = [55.9292, 23.3102]
         map = folium.Map(location=map_center, zoom_start=12)
         #-
@@ -431,6 +524,7 @@ with tab4:
             features["x_coord"] = x_coord
             features["y_coord"] = y_coord
     
+
     st.markdown("""
         <style>
         div.stButton > button:first-child {
@@ -443,28 +537,41 @@ with tab4:
     """, unsafe_allow_html=True)
 
     # Center the button and make prediction
-    if st.button("Predict Energy Consumption"):
+    if st.button(trans("Predict Energy Consumption")):
         preds_heat = get_prediction([features.values()])
         preds_wat = get_prediction([features.values()], "xgb_wat_v1.sav", "column_transformer_wat.pkl")
         
         # Display results in a styled container
-        st.markdown("""
+        st.markdown(f"""
             <div style='background-color: #f8f9fa; padding: 20px; border-radius: 10px; margin-top: 20px;'>
-                <h3 style='color: #2c3e50;'>Prediction Results</h3>
+                <h3 style='color: #2c3e50;'>{trans("Prediction Results")}</h3>
                 <div style='display: flex; justify-content: space-between;'>
                     <div style='background-color: #e8f5e9; padding: 15px; border-radius: 8px; width: 48%;'>
-                        <h4 style='color: #2ecc71; margin: 0;'>Heat Consumption</h4>
-                        <p style='font-size: 24px; color: #2ecc71; margin: 5px 0 0 0;'>{:.2f} kWh / month</p>
+                        <h4 style='color: #2ecc71; margin: 0;'>{trans("Heat Consumption")}</h4>
+                        <p style='font-size: 24px; color: #2ecc71; margin: 5px 0 0 0;'>{float(preds_heat):.2f} kWh / {trans("month")}</p>
                     </div>
                     <div style='background-color: #e3f2fd; padding: 15px; border-radius: 8px; width: 48%;'>
-                        <h4 style='color: #3498db; margin: 0;'>Water Consumption</h4>
-                        <p style='font-size: 24px; color: #3498db; margin: 5px 0 0 0;'>{:.2f} m³ / month</p>
+                        <h4 style='color: #3498db; margin: 0;'>{trans("Hot Water Consumption")}</h4>
+                        <p style='font-size: 24px; color: #3498db; margin: 5px 0 0 0;'>{float(preds_wat):.2f} m³ / {trans("month")}</p>
                     </div>
                 </div>
             </div>
-        """.format(float(preds_heat), float(preds_wat)), unsafe_allow_html=True)
-    st.markdown("### Technical description of the AI model")
-    st.markdown("""
-    ### 1. The data
-    The data used to train the model was procured from
+        """, unsafe_allow_html=True)
+    st.markdown(f"### {trans("Technical description of the AI model")}")
+    st.markdown(f"""
+    ### 1. {trans("The data")}
+    {trans("The data used to train the model was sourced from Lithuania's open data portal, data.gov.lt, and includes records up to 2025. Preparing the data for modeling required extensive preprocessing. For instance, geographical coordinates needed to be converted from one system to another. Additionally, the dataset contained multiple records for the same room and time period under a specific service category, such as 'heat', though another column provided more detailed classifications. Since these records shared the same units, I aggregated them by summing their values. This reduced, for example, five separate entries for a single room and time period into one consolidated figure, which the model then predicts.")}
     """)
+    st.image("explanation.png")
+    st.markdown(f"""
+    ### 2. {trans("The model")}
+    {trans("For this tool, I employed an XGBoost model, which leverages Gradient Boosted Decision Trees. While I considered alternative models, my experience—particularly from data science competitions on Kaggle—has shown that libraries like XGBoost and CatBoost often deliver top-tier performance for tabular datasets. This made XGBoost a confident choice. The model is both efficient and lightweight. During training, its hyperparameters were optimized using Optuna, a widely recognized industry-standard library.")}
+
+    ### 3. {trans("Evaluation")}
+    {trans("The model’s performance was assessed using two metrics: Mean Absolute Error (MAE) and Root Mean Squared Error (RMSE). Across the test set, the MAE for heat consumption is 140 kWh, indicating an average prediction error of about 140 kWh. However, this figure is somewhat inflated by extreme values where the model’s predictions deviate significantly. For most samples, the average error is closer to 90 kWh, with some predictions as accurate as 15, 30, or 50 kWh off. Generally, larger predicted values correlate with larger errors, likely due to the scarcity of high-energy-consumption samples in the dataset. This skews the heat consumption feature heavily. While these high values could be considered outliers, they are not errors, so I opted to retain them. The RMSE, at around 800 kWh, confirms that the model struggles more with outliers, as expected.")}
+
+    {trans("The model excels at predicting heat consumption in kWh but performs poorly with hot water consumption. Its MAE for hot water prediction is approximately 1 m³, meaning it errs by about 1 cubic meter on average. This larger error makes sense, as hot water consumption is inherently harder to predict than heat consumption. Given this limitation, I’d advise against deploying the model for hot water predictions in a production environment.")}
+
+    {trans("Below is a sample from the test set used to evaluate the model. It compares actual values from the dataset with the AI’s predictions, showcasing impressive results, especially for heat consumption. In some cases, the model is off by 300 kWh or 50 kWh, while in others, it’s spot-on with a difference of 0 kWh. The Actual column reflects the real values the AI aims to match, the Preds column displays the AI’s predictions, and the Diff column indicates the difference between them, revealing the model’s error in units.")}
+    """)
+    st.image("sample.png")
