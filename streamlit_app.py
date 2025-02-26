@@ -159,7 +159,52 @@ st.markdown(
 intro, tab1, tab2, tab3, tab4 = st.tabs(["Intro", trans("Overall Consumption Trends"), trans("Trends By Building Function"), trans("Rooms Data"), trans("AI Consumption Estimation Tool")])
 
 with intro:
-    st.header("intro")
+    st.header("Introduction")
+    st.markdown("""
+    ## About
+    This web app serves as a data analytics and data science project, exploring energy consumption data in Šiauliai, Lithuania. The data, collected by AB "Šiaulių Energija," is publicly available on [data.gov.lt](https://data.gov.lt). The app features various graphs, heatmaps, and statistics designed to deliver valuable insights for stakeholders. It also includes an advanced AI tool that estimates energy consumption for rooms, offering practical real-world applications. The project is open-source and available on [GitHub](https://github.com).
+    
+    ## Quick How-to
+    Get started with these simple steps:
+
+    1. **Open the Sidebar**: Access the sidebar on the left side of the web app.
+    2. **Choose Language**: Select your preferred language—English or Lithuanian.
+    3. **Select Data**: Pick the type of data to view (heat consumption or hot water consumption). The website will update automatically based on your choice.
+    4. **Explore Tabs**: Click the tabs in the center of the page to navigate through the content.
+
+    Most graphs are interactive and can be explored in detail, as can the 3D heatmaps.
+
+    ## Purpose
+    Although I recently began my bachelor’s degree in Data Science and Applied Mathematics, I have a deep passion for self-learning and have been studying data science for nearly two years. To build my skills, I’ve completed numerous courses, read extensively, and participated in data science competitions, all to prepare for a career in this field. Seeking to apply my knowledge, I explored project ideas to strengthen my portfolio. While browsing public data websites, I discovered a dataset on energy consumption in my hometown, Šiauliai. This dataset piqued my interest due to its potential for both data analytics and the creation of practical machine learning (AI) models. To share my findings effectively, I developed this web app to present the results in a user-friendly and accessible way. After roughly 80 hours of effort, I completed the project and am delighted with the outcome.
+
+    ## Technical Skills Used
+    To bring this project to life, I drew on my expertise in data science, Python, and a range of data science libraries. My workflow included:
+
+    - **Environment Setup**: Managing Python environments, Linux VMs, packages, and Jupyter notebooks.
+    - **Data Processing**: Using Pandas, NumPy, and Matplotlib to clean, manipulate, and visualize data.
+    - **Modeling**: Leveraging Scikit-learn and XGBoost for model development and evaluation, with Optuna for optimization to boost performance.
+    - **Web Development**: Learning Streamlit to build the web application.
+    - **Version Control**: Utilizing GitHub for tracking changes and deploying the app online.
+
+    These skills enabled me to transform raw data into a functional and insightful tool.
+
+    ## Challenges
+    The project presented several obstacles, including:
+
+    - **Hardware Limitations**: Downloading and processing a large dataset on a low-performance computer, which significantly delayed model training and optimization.
+    - **Translation**: Translating the entire web app into English and Lithuanian, a straightforward but time-intensive task.
+    - **Ideation**: Brainstorming ideas for graphs and statistics that would be both relevant and useful to users.
+
+    Overcoming these hurdles required persistence and creative problem-solving.
+
+    ## Improvements
+    While I achieved most of my initial objectives, there’s room for enhancement:
+
+    - **Data Updates**: An issue with the source website prevented me from obtaining a complete 2024 dataset, leaving some graphs without this year’s data due to its incompleteness.
+    - **Performance**: The web app could be smoother, with techniques like caching offering potential optimization.
+
+    These areas provide opportunities for future refinement as I continue to develop the project.
+        """)
 with tab1:
     st.markdown(
     f"<h1 style='text-align: center;'>{trans("Energy Consumption Trends")}</h1>",
