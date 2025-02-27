@@ -250,7 +250,7 @@ with tab1:
             f"<h3 style='text-align: center;'>{trans('Monthly')}</h3>",
             unsafe_allow_html=True
         )
-        monthly_trend = pd.read_csv("monthly_trend.csv")
+        monthly_trend = pd.read_csv("csv_files/monthly_trend.csv")
         monthly_trend["Date"] = pd.to_datetime(monthly_trend["month"])
         opt = {
             "Heat, kWh": "Šiluma",
@@ -273,7 +273,7 @@ with tab1:
             f"<h3 style='text-align: center;'>{trans('Yearly')}</h3>",
             unsafe_allow_html=True
         )
-        yearly_trend = pd.read_csv("yearly_trend.csv")
+        yearly_trend = pd.read_csv("csv_files/yearly_trend.csv")
         res_lt = opt[res_side]
         st.bar_chart(
             yearly_trend,
@@ -295,7 +295,7 @@ with tab1:
             f"<h3 style='text-align: center;'>{trans('Monthly')}</h3>",
             unsafe_allow_html=True
         )
-        contract_trend = pd.read_csv("contract_trend.csv")
+        contract_trend = pd.read_csv("csv_files/contract_trend.csv")
         contract_trend["month"] = pd.to_datetime(contract_trend["month"])
         st.line_chart(
             contract_trend,
@@ -311,7 +311,7 @@ with tab1:
             f"<h3 style='text-align: center;'>{trans('Yearly')}</h3>",
             unsafe_allow_html=True
         )
-        contract_trend_yearly = pd.read_csv("contract_trend_yearly.csv")
+        contract_trend_yearly = pd.read_csv("csv_files/contract_trend_yearly.csv")
         st.bar_chart(
             contract_trend_yearly,
             x="year",
@@ -330,17 +330,17 @@ with tab1:
         st.markdown(trans("""In this analysis, we employ a sophisticated statistical tool known as SARIMA—Seasonal Autoregressive Integrated Moving Average—to forecast the trajectory of heat consumption over the next three years. This model allows us to capture both seasonal patterns and long-term trends in the data, providing a reliable prediction of how heat consumption might evolve.
         The regions shaded in red on the graph illustrate the upper and lower bounds of the prediction error for the forecast.
         These areas represent the range within which the actual heat consumption values are likely to fall."""))
-        st.image("image.png", use_container_width=True)
+        st.image("images/image.png", use_container_width=True)
 
     st.markdown(
         f"<h1 style='text-align: center;'>{trans('Consumption Heatmap')}</h1>",
         unsafe_allow_html=True
     )
     opt_csv = {
-        "Heat, kWh": "geo_amount_heat.csv",
-        "Hot water, m³": "geo_amount_wat.csv",
-        "Šiluma, kWh": "geo_amount_heat.csv",
-        "Karštas vanduo, m³": "geo_amount_wat.csv"
+        "Heat, kWh": "csv_files/geo_amount_heat.csv",
+        "Hot water, m³": "csv_files/geo_amount_wat.csv",
+        "Šiluma, kWh": "csv_files/geo_amount_heat.csv",
+        "Karštas vanduo, m³": "csv_files/geo_amount_wat.csv"
     }
     res_csv = opt_csv[res_side]
     date_range = pd.date_range(start="2019-01-01", end="2023-12-31", freq="MS").to_pydatetime().tolist()
@@ -381,7 +381,7 @@ with tab2:
             f"<h3 style='text-align: center;'>{trans('Number of Rooms by Building Function')}</h3>",
             unsafe_allow_html=True
         )
-        rooms = pd.read_csv("rooms.csv")
+        rooms = pd.read_csv("csv_files/rooms.csv")
         func_val_counts = rooms["building_func"].value_counts()
         st.table(func_val_counts)
 
@@ -390,7 +390,7 @@ with tab2:
             f"<h3 style='text-align: center;'>{trans('Average Monthly Heat Consumption / m² by Function')}</h3>",
             unsafe_allow_html=True
         )
-        func_df = pd.read_csv("func_df.csv")
+        func_df = pd.read_csv("csv_files/func_df.csv")
         bar_chart = alt.Chart(func_df).mark_bar().encode(
             y=alt.Y("building_func:N", sort="-x", title=trans("Building Function")),
             x=alt.X("eff:Q", title="kWh / m²"),
@@ -399,8 +399,8 @@ with tab2:
         st.altair_chart(bar_chart, use_container_width=True)
 
     st.write(trans("### Yearly Consumption trend by building function"))
-    heat_cons_by_func = pd.read_csv("heat_cons_by_func.csv")
-    wat_cons_by_func = pd.read_csv("wat_cons_by_func.csv")
+    heat_cons_by_func = pd.read_csv("csv_files/heat_cons_by_func.csv")
+    wat_cons_by_func = pd.read_csv("csv_files/wat_cons_by_func.csv")
     opt_csv = {
         "Heat, kWh": heat_cons_by_func,
         "Hot water, m³": wat_cons_by_func,
@@ -429,7 +429,7 @@ with tab3:
             "<h1 style='font-size: 72px; text-align: center;'>44900</h1>",
             unsafe_allow_html=True
         )
-        area_df = pd.read_csv("area_df.csv")
+        area_df = pd.read_csv("csv_files/area_df.csv")
         st.header(trans("Average Heat Consumption / m² against Room Area"))
         chart = alt.Chart(area_df).mark_bar().encode(
             x=alt.X("area_bins:N", sort="-y", title=trans("Room Area, m²")),
@@ -467,7 +467,7 @@ with tab3:
     st.write(trans("From the graph above we can see that as the room area increases the average heat consumption per square meter actually decreases, meaning it is more efficient to provide heating for larger rooms rather than smaller ones."))
     st.write(trans("## Number of Rooms per buyer, Top 20 buyers"))
     st.write(trans("From this bar chart, we can see that a few buyers possess hundreds of rooms, but we can’t identify who they are because the data about the buyers in the dataset is anonymized."))
-    buyer_rooms = pd.read_csv("buyer_rooms.csv")
+    buyer_rooms = pd.read_csv("csv_files/buyer_rooms.csv")
     st.bar_chart(
         buyer_rooms["room_id"],
         x_label=trans("Individual buyers"),
@@ -477,7 +477,7 @@ with tab3:
 
     st.write(trans("## Average Heat Consumption / m² by buildings build year"))
     st.write(trans("Over time we can see that heat consumption decreases as buildings get younger, which can be attributed to better construction and insulation technology. Specifically buildings built after 1940 and then 2000 have lower consumption heat consumption on average"))
-    heat_by_build_year = pd.read_csv("heat_by_build_year.csv")
+    heat_by_build_year = pd.read_csv("csv_files/heat_by_build_year.csv")
     st.bar_chart(
         heat_by_build_year,
         x="build_year",
@@ -491,7 +491,7 @@ with tab3:
     st.write(trans("# Most frequent build year -- 1970 (1924 buildings)"))
     st.write(trans("## Geospatial building age heatmap"))
     st.write(trans("Green color means newer buildings, blue is older buildings"))
-    geo_build = pd.read_csv("geo_build.csv")
+    geo_build = pd.read_csv("csv_files/geo_build.csv")
     geo_build = geo_build[geo_build["build_year"] > 1900]
     st.pydeck_chart(
         pdk.Deck(
@@ -526,7 +526,7 @@ with tab3:
     st.write(trans("# Highest building -- 15 floors"))
     st.write(trans("## Geospatial building floors heatmap"))
     st.write(trans("Red color means higher buildings with more floors, blue are lower buildings with less floors"))
-    geo_floors = pd.read_csv("geo_floors.csv")
+    geo_floors = pd.read_csv("csv_files/geo_floors.csv")
     st.pydeck_chart(
         pdk.Deck(
             map_style=None,
@@ -659,7 +659,7 @@ with tab4:
 
     if st.button(trans("Predict Energy Consumption")):
         preds_heat = get_prediction([features.values()])
-        preds_wat = get_prediction([features.values()], "xgb_wat_v1.sav", "column_transformer_wat.pkl")
+        preds_wat = get_prediction([features.values()], "other_files/xgb_wat_v1.sav", "other_files/column_transformer_wat.pkl")
         st.markdown(
             f"""
             <div style='background-color: #f8f9fa; padding: 20px; border-radius: 10px; margin-top: 20px;'>
@@ -684,7 +684,7 @@ with tab4:
     ### 1. {trans('The data')}
     {trans("The data used to train the model was sourced from Lithuania's open data portal, data.gov.lt, and includes records up to 2025. Preparing the data for modeling required extensive preprocessing. For instance, geographical coordinates needed to be converted from one system to another. Additionally, the dataset contained multiple records for the same room and time period under a specific service category, such as 'heat', though another column provided more detailed classifications. Since these records shared the same units, I aggregated them by summing their values. This reduced, for example, five separate entries for a single room and time period into one consolidated figure, which the model then predicts.")}
     """)
-    st.image("explanation.png")
+    st.image("images/explanation.png")
     st.markdown(f"""
     ### 2. {trans('The model')}
     {trans('For this tool, I employed an XGBoost model, which leverages Gradient Boosted Decision Trees. While I considered alternative models, my experience—particularly from data science competitions on Kaggle—has shown that libraries like XGBoost and CatBoost often deliver top-tier performance for tabular datasets. This made XGBoost a confident choice. The model is both efficient and lightweight. During training, its hyperparameters were optimized using Optuna, a widely recognized industry-standard library.')}
@@ -696,4 +696,4 @@ with tab4:
 
     {trans('Below is a sample from the test set used to evaluate the model. It compares actual values from the dataset with the AI’s predictions, showcasing impressive results, especially for heat consumption. In some cases, the model is off by 300 kWh or 50 kWh, while in others, it’s spot-on with a difference of 0 kWh. The Actual column reflects the real values the AI aims to match, the Preds column displays the AI’s predictions, and the Diff column indicates the difference between them, revealing the model’s error in units.')}
     """)
-    st.image("sample.png")
+    st.image("images/sample.png")
