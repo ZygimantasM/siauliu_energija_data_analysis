@@ -193,7 +193,7 @@ with intro:
     st.header("Introduction")
     st.markdown(f"""
     ## {trans('About')}
-    {trans('This web app serves as a data analytics and data science project, exploring energy consumption data in Šiauliai, Lithuania. The data, collected by AB \'Šiaulių Energija\', is publicly available on [data.gov.lt](https://data.gov.lt/datasets/2886/). The app features various graphs, heatmaps, and statistics designed to deliver valuable insights for stakeholders. It also includes an advanced AI tool that estimates energy consumption for rooms, offering practical real-world applications. The project is open-source and available on [GitHub](https://github.com).')}
+    {trans('This web app serves as a data analytics and data science project, exploring energy consumption data in Šiauliai, Lithuania. The data, collected by AB \'Šiaulių Energija\', is publicly available on [data.gov.lt](https://data.gov.lt/datasets/2886/). The app features various graphs, heatmaps, and statistics designed to deliver valuable insights for stakeholders. It also includes an advanced AI tool that estimates energy consumption for rooms, offering practical real-world applications. The project is open-source and available on [GitHub](https://github.com/ZygimantasM/siauliu_energija_data_analysis).')}
 
     ## {trans('Quick How-to')}
     {trans('Get started with these simple steps:')}
