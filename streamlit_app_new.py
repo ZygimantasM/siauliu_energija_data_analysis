@@ -1,22 +1,25 @@
+from datetime import datetime
 import streamlit as st
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-from datetime import datetime
 import altair as alt
 import pydeck as pdk
-from helper_funcs import get_prediction
-from streamlit_folium import st_folium
 import folium
+from streamlit_folium import st_folium
+from helper_funcs import get_prediction
 
+
+
+# Set page configuration
 st.set_page_config(layout="wide")
 
+# Sidebar setup
 sidebar = st.sidebar
 sidebar.header("Settings / Nustatymai")
 
+# Language selection
+lang = sidebar.selectbox("Language / Kalba", ("English", "Lietuvių"), key=47)
 
-lang = sidebar.selectbox("Language / Kalba", ("English", "Lietuvių"), placeholder="English", key=47)
-
+# Lithuanian translations dictionary
 lt_mappings = {
     "Data Analysis of AB \"Šiaulių Energija\"": "Duomenų Analizė AB \"Šiaulių Energija\"",
     "Select Category": "Pasirink Kategorija",
@@ -128,27 +131,28 @@ lt_mappings = {
     "**Data Updates**: An issue with the source website prevented me from obtaining a complete 2024 dataset, leaving some graphs without this year’s data due to its incompleteness.": "**Duomenų atnaujinimai**: Problema su šaltinio svetaine neleido man gauti pilno 2024 metų duomenų rinkinio, todėl kai kurie grafikai neturi šių metų duomenų dėl jų neišsamumo.",
     "**Performance**: The web app could be smoother, with techniques like caching offering potential optimization.": "**Veikimas**: Internetinė programėlė galėtų veikti sklandžiau, pasitelkiant kelis programavimo būdus",
     "These areas provide opportunities for future refinement as I continue to develop the project.": "Šie trūkumai suteikia galimybių patobulinti puslapį ateityje, toliau vystant projektą" 
-
-
-    
-
-
-
-
 }
 
+# Translation function with fallback
 def trans(text, lang=lang):
+    """Translate text based on selected language, default to original if not found."""
     if lang == "English":
         return text
-    else:
-        return lt_mappings[text]
+    return lt_mappings.get(text, text)
 
-res_side = sidebar.selectbox(trans("Select Category"), (trans("Heat, kWh"), trans("Hot water, m³")), placeholder="Heat", key=48)
-spacer = st.sidebar.empty()
-with spacer.container():
-    st.markdown("<div style='height: 25vh;'></div>", unsafe_allow_html=True)
+# Category selection
+category_options = (trans("Heat, kWh"), trans("Hot water, m³"))
+res_side = sidebar.selectbox(trans("Select Category"), category_options, key=48)
+
+# Sidebar spacer
+sidebar.empty().markdown("<div style='height: 25vh;'></div>", unsafe_allow_html=True)
+
+# Social media links
 sidebar.title(trans("Socials"))
-sidebar.markdown('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">', unsafe_allow_html=True)
+sidebar.markdown(
+    '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">',
+    unsafe_allow_html=True
+)
 sidebar.markdown(
     """
     <div style="background-color: #ffffff; border-radius: 15px; padding: 15px; display: flex; flex-direction: column; gap: 10px;">
@@ -168,158 +172,178 @@ sidebar.markdown(
     """,
     unsafe_allow_html=True
 )
+
+# Main title
 st.markdown(
-        f"<h1 style='font-size: 62px; text-align: center;'>{trans("Data Analysis of AB \"Šiaulių Energija\"")}</h1>",
-        unsafe_allow_html=True
-    )
+    f"<h1 style='font-size: 62px; text-align: center;'>{trans('Data Analysis of AB \"Šiaulių Energija\"')}</h1>",
+    unsafe_allow_html=True
+)
 
+# Define tabs
+intro, tab1, tab2, tab3, tab4 = st.tabs([
+    "Intro",
+    trans("Overall Consumption Trends"),
+    trans("Trends By Building Function"),
+    trans("Rooms Data"),
+    trans("AI Consumption Estimation Tool")
+])
 
-
-
-
-
-
-
-
-
-intro, tab1, tab2, tab3, tab4 = st.tabs(["Intro", trans("Overall Consumption Trends"), trans("Trends By Building Function"), trans("Rooms Data"), trans("AI Consumption Estimation Tool")])
-
+# Intro tab
 with intro:
     st.header("Introduction")
     st.markdown(f"""
-    ## {trans("About")}
-    {trans("This web app serves as a data analytics and data science project, exploring energy consumption data in Šiauliai, Lithuania. The data, collected by AB 'Šiaulių Energija', is publicly available on [data.gov.lt](https://data.gov.lt/datasets/2886/). The app features various graphs, heatmaps, and statistics designed to deliver valuable insights for stakeholders. It also includes an advanced AI tool that estimates energy consumption for rooms, offering practical real-world applications. The project is open-source and available on [GitHub](https://github.com).")}
-    
-    ## {trans("Quick How-to")}
-    {trans("Get started with these simple steps:")}
+    ## {trans('About')}
+    {trans('This web app serves as a data analytics and data science project, exploring energy consumption data in Šiauliai, Lithuania. The data, collected by AB \'Šiaulių Energija\', is publicly available on [data.gov.lt](https://data.gov.lt/datasets/2886/). The app features various graphs, heatmaps, and statistics designed to deliver valuable insights for stakeholders. It also includes an advanced AI tool that estimates energy consumption for rooms, offering practical real-world applications. The project is open-source and available on [GitHub](https://github.com).')}
 
-    1. {trans("**Open the Sidebar**: Access the sidebar on the left side of the web app.")}
-    2. {trans("**Choose Language**: Select your preferred language—English or Lithuanian.")}
-    3. {trans("**Select Data**: Pick the type of data to view (heat consumption or hot water consumption). The website will update automatically based on your choice.")}
-    4. {trans("**Explore Tabs**: Click the tabs in the center of the page to navigate through the content.")}
+    ## {trans('Quick How-to')}
+    {trans('Get started with these simple steps:')}
 
-    {trans("Most graphs are interactive and can be explored in detail, as can the 3D heatmaps.")}
+    1. {trans('**Open the Sidebar**: Access the sidebar on the left side of the web app.')}
+    2. {trans('**Choose Language**: Select your preferred language—English or Lithuanian.')}
+    3. {trans('**Select Data**: Pick the type of data to view (heat consumption or hot water consumption). The website will update automatically based on your choice.')}
+    4. {trans('**Explore Tabs**: Click the tabs in the center of the page to navigate through the content.')}
 
-    ## {trans("Purpose")}
-    {trans("Although I recently began my bachelor’s degree in Data Science and Applied Mathematics, I have a deep passion for self-learning and have been studying data science for nearly two years. To build my skills, I’ve completed numerous courses, read extensively, and participated in data science competitions, all to prepare for a career in this field. Seeking to apply my knowledge, I explored project ideas to strengthen my portfolio. While browsing public data websites, I discovered a dataset on energy consumption in my hometown, Šiauliai. This dataset piqued my interest due to its potential for both data analytics and the creation of practical machine learning (AI) models. To share my findings effectively, I developed this web app to present the results in a user-friendly and accessible way. After roughly 80 hours of effort, I completed the project and am delighted with the outcome.")}
+    {trans('Most graphs are interactive and can be explored in detail, as can the 3D heatmaps.')}
 
-    ## {trans("Technical Skills Used")}
-    {trans("To bring this project to life, I drew on my expertise in data science, Python, and a range of data science libraries. My workflow included:")}
+    ## {trans('Purpose')}
+    {trans('Although I recently began my bachelor’s degree in Data Science and Applied Mathematics, I have a deep passion for self-learning and have been studying data science for nearly two years. To build my skills, I’ve completed numerous courses, read extensively, and participated in data science competitions, all to prepare for a career in this field. Seeking to apply my knowledge, I explored project ideas to strengthen my portfolio. While browsing public data websites, I discovered a dataset on energy consumption in my hometown, Šiauliai. This dataset piqued my interest due to its potential for both data analytics and the creation of practical machine learning (AI) models. To share my findings effectively, I developed this web app to present the results in a user-friendly and accessible way. After roughly 80 hours of effort, I completed the project and am delighted with the outcome.')}
 
-    - {trans("**Environment Setup**: Managing Python environments, Linux VMs, packages, and Jupyter notebooks.")}
-    - {trans("**Data Processing**: Using Pandas, NumPy, and Matplotlib to clean, manipulate, and visualize data.")}
-    - {trans("**Modeling**: Leveraging Scikit-learn and XGBoost for model development and evaluation, with Optuna for optimization to boost performance.")}
-    - {trans("**Web Development**: Learning Streamlit to build the web application.")}
-    - {trans("**Version Control**: Utilizing GitHub for tracking changes and deploying the app online.")}
+    ## {trans('Technical Skills Used')}
+    {trans('To bring this project to life, I drew on my expertise in data science, Python, and a range of data science libraries. My workflow included:')}
 
-    {trans("These skills enabled me to transform raw data into a functional and insightful tool.")}
+    - {trans('**Environment Setup**: Managing Python environments, Linux VMs, packages, and Jupyter notebooks.')}
+    - {trans('**Data Processing**: Using Pandas, NumPy, and Matplotlib to clean, manipulate, and visualize data.')}
+    - {trans('**Modeling**: Leveraging Scikit-learn and XGBoost for model development and evaluation, with Optuna for optimization to boost performance.')}
+    - {trans('**Web Development**: Learning Streamlit to build the web application.')}
+    - {trans('**Version Control**: Utilizing GitHub for tracking changes and deploying the app online.')}
 
-    ## {trans("Challenges")}
-    {trans("The project presented several obstacles, including:")}
+    {trans('These skills enabled me to transform raw data into a functional and insightful tool.')}
 
-    - {trans("**Hardware Limitations**: Downloading and processing a large dataset on a low-performance computer, which significantly delayed model training and optimization.")}
-    - {trans("**Translation**: Translating the entire web app into English and Lithuanian, a straightforward but time-intensive task.")}
-    - {trans("**Ideation**: Brainstorming ideas for graphs and statistics that would be both relevant and useful to users.")}
+    ## {trans('Challenges')}
+    {trans('The project presented several obstacles, including:')}
 
-    {trans("Overcoming these hurdles required persistence and creative problem-solving.")}
+    - {trans('**Hardware Limitations**: Downloading and processing a large dataset on a low-performance computer, which significantly delayed model training and optimization.')}
+    - {trans('**Translation**: Translating the entire web app into English and Lithuanian, a straightforward but time-intensive task.')}
+    - {trans('**Ideation**: Brainstorming ideas for graphs and statistics that would be both relevant and useful to users.')}
 
-    ## {trans("Improvements")}
-    {trans("While I achieved most of my initial objectives, there’s room for enhancement:")}
+    {trans('Overcoming these hurdles required persistence and creative problem-solving.')}
 
-    - {trans("**Data Updates**: An issue with the source website prevented me from obtaining a complete 2024 dataset, leaving some graphs without this year’s data due to its incompleteness.")}
-    - {trans("**Performance**: The web app could be smoother, with techniques like caching offering potential optimization.")}
+    ## {trans('Improvements')}
+    {trans('While I achieved most of my initial objectives, there’s room for enhancement:')}
 
-    {trans("These areas provide opportunities for future refinement as I continue to develop the project.")}
-        """)
+    - {trans('**Data Updates**: An issue with the source website prevented me from obtaining a complete 2024 dataset, leaving some graphs without this year’s data due to its incompleteness.')}
+    - {trans('**Performance**: The web app could be smoother, with techniques like caching offering potential optimization.')}
+
+    {trans('These areas provide opportunities for future refinement as I continue to develop the project.')}
+    """)
+
+# Tab 1: Overall Consumption Trends
 with tab1:
     st.markdown(
-    f"<h1 style='text-align: center;'>{trans("Energy Consumption Trends")}</h1>",
-    unsafe_allow_html=True
+        f"<h1 style='text-align: center;'>{trans('Energy Consumption Trends')}</h1>",
+        unsafe_allow_html=True
     )
     col1, col2 = st.columns(2)
-    
-    
+
     with col1:
-        #_---------------------------------------------
-        # Monthly trend data
         st.markdown(
-            f"<h3 style='text-align: center;'>{trans("Monthly")}</h1>",
+            f"<h3 style='text-align: center;'>{trans('Monthly')}</h3>",
             unsafe_allow_html=True
         )
         monthly_trend = pd.read_csv("monthly_trend.csv")
         monthly_trend["Date"] = pd.to_datetime(monthly_trend["month"])
-        
         opt = {
-            'Heat, kWh': 'Šiluma',
-            'Hot water, m³': 'Karštas vanduo',
+            "Heat, kWh": "Šiluma",
+            "Hot water, m³": "Karštas vanduo",
             "Šiluma, kWh": "Šiluma",
             "Karštas vanduo, m³": "Karštas vanduo"
         }
         res_lt = opt[res_side]
-        st.line_chart(monthly_trend, x="Date", y=res_lt, y_label=res_side, x_label = trans("Date"), color="#fcaa01")
-        
+        st.line_chart(
+            monthly_trend,
+            x="Date",
+            y=res_lt,
+            y_label=res_side,
+            x_label=trans("Date"),
+            color="#fcaa01"
+        )
+
     with col2:
         st.markdown(
-            f"<h3 style='text-align: center;'>{trans("Yearly")}</h1>",
+            f"<h3 style='text-align: center;'>{trans('Yearly')}</h3>",
             unsafe_allow_html=True
         )
-        #_---------------------------------------------
-        # Yearly trend data
-        monthly_trend = pd.read_csv("yearly_trend.csv")
+        yearly_trend = pd.read_csv("yearly_trend.csv")
         res_lt = opt[res_side]
-        st.bar_chart(monthly_trend, x="year", y=res_lt, y_label=res_side, x_label=trans("Year"),color= "#fcaa01")
-        #------------------------------------------------
+        st.bar_chart(
+            yearly_trend,
+            x="year",
+            y=res_lt,
+            y_label=res_side,
+            x_label=trans("Year"),
+            color="#fcaa01"
+        )
+
     st.markdown(
-    f"<h1 style='text-align: center;'>{trans("Number Of Provided Services")}</h1>",
-    unsafe_allow_html=True
+        f"<h1 style='text-align: center;'>{trans('Number Of Provided Services')}</h1>",
+        unsafe_allow_html=True
     )
     col3, col4 = st.columns(2)
+
     with col3:
-        # Contracts monthly trend
+        st.markdown(
+            f"<h3 style='text-align: center;'>{trans('Monthly')}</h3>",
+            unsafe_allow_html=True
+        )
         contract_trend = pd.read_csv("contract_trend.csv")
         contract_trend["month"] = pd.to_datetime(contract_trend["month"])
-        st.markdown(
-            f"<h3 style='text-align: center;'>{trans("Monthly")}</h1>",
-            unsafe_allow_html=True
+        st.line_chart(
+            contract_trend,
+            x="month",
+            y="0",
+            y_label=trans("No. Services"),
+            x_label=trans("Date"),
+            color="#fcaa01"
         )
-        st.line_chart(contract_trend, x="month", y="0", y_label=trans("No. Services"), x_label=trans("Date"), color="#fcaa01")
+
     with col4:
-        #------------------------------------------------
-        # Contracts yearly trend
-        contract_trend = pd.read_csv("contract_trend_yearly.csv")
         st.markdown(
-            f"<h3 style='text-align: center;'>{trans("Yearly")}</h1>",
+            f"<h3 style='text-align: center;'>{trans('Yearly')}</h3>",
             unsafe_allow_html=True
         )
-        st.bar_chart(contract_trend, x="year", y="0", x_label=trans("Year"), y_label=trans("No. Services"), color="#fcaa01")
-        #----------------------------------------------
+        contract_trend_yearly = pd.read_csv("contract_trend_yearly.csv")
+        st.bar_chart(
+            contract_trend_yearly,
+            x="year",
+            y="0",
+            x_label=trans("Year"),
+            y_label=trans("No. Services"),
+            color="#fcaa01"
+        )
+
     st.markdown(
-    f"<h1 style='text-align: center;'>{trans("Heat Consumption Forecast Using SARIMA")}</h1>",
-    unsafe_allow_html=True
+        f"<h1 style='text-align: center;'>{trans('Heat Consumption Forecast Using SARIMA')}</h1>",
+        unsafe_allow_html=True
     )
-    
-    cols1, cols2, cols3 = st.columns([1, 8, 1])  # Adjust the ratios to center as needed
+    cols1, cols2, cols3 = st.columns([1, 8, 1])
     with cols2:
         st.markdown(trans("""In this analysis, we employ a sophisticated statistical tool known as SARIMA—Seasonal Autoregressive Integrated Moving Average—to forecast the trajectory of heat consumption over the next three years. This model allows us to capture both seasonal patterns and long-term trends in the data, providing a reliable prediction of how heat consumption might evolve.
         The regions shaded in red on the graph illustrate the upper and lower bounds of the prediction error for the forecast.
         These areas represent the range within which the actual heat consumption values are likely to fall."""))
-        st.image("image.png", use_container_width=True, caption="Centered Image")
+        st.image("image.png", use_container_width=True)
+
     st.markdown(
-    f"<h1 style='text-align: center;'>{trans("Consumption Heatmap")}</h1>",
-    unsafe_allow_html=True
+        f"<h1 style='text-align: center;'>{trans('Consumption Heatmap')}</h1>",
+        unsafe_allow_html=True
     )
-   
     opt_csv = {
-            'Heat, kWh': 'geo_amount_heat.csv',
-            'Hot water, m³': 'geo_amount_wat.csv',
-            "Šiluma, kWh": 'geo_amount_heat.csv',
-            "Karštas vanduo, m³": 'geo_amount_wat.csv'
-        }
+        "Heat, kWh": "geo_amount_heat.csv",
+        "Hot water, m³": "geo_amount_wat.csv",
+        "Šiluma, kWh": "geo_amount_heat.csv",
+        "Karštas vanduo, m³": "geo_amount_wat.csv"
+    }
     res_csv = opt_csv[res_side]
-
-    date_range = pd.date_range(start="2019-01-01", end="2023-12-31", freq='MS').to_pydatetime().tolist()
-
-    # Create the slider with the list of dates as options
+    date_range = pd.date_range(start="2019-01-01", end="2023-12-31", freq="MS").to_pydatetime().tolist()
     st.write(trans("## Select date to view"))
     st.write(trans("Red color - Higher consumption area, Yellow - Lower consumption area"))
     res_date = st.select_slider(" ", options=date_range, value=datetime(2019, 1, 1))
@@ -327,212 +351,209 @@ with tab1:
     geo_amount = pd.read_csv(res_csv)
     geo_amount_filtered = geo_amount[geo_amount["month"] == res_date]
     st.pydeck_chart(
-    pdk.Deck(
-        map_style=None,
-        initial_view_state=pdk.ViewState(
-            latitude=55.9192288419136,
-            longitude=23.29157347671509,
-            zoom=11.6,
-            pitch=50,
-        ),
-        layers=[
-            pdk.Layer(
-                "HeatmapLayer",
-                data=geo_amount_filtered,
-                get_position="[x_grid, y_grid]",
-                get_weight="amount",
-                radiusPixels=80,
-                intensity=1,
-                threshold=0.1,
-            )
-            
-        ],
+        pdk.Deck(
+            map_style=None,
+            initial_view_state=pdk.ViewState(
+                latitude=55.9192288419136,
+                longitude=23.29157347671509,
+                zoom=11.6,
+                pitch=50
+            ),
+            layers=[
+                pdk.Layer(
+                    "HeatmapLayer",
+                    data=geo_amount_filtered,
+                    get_position="[x_grid, y_grid]",
+                    get_weight="amount",
+                    radiusPixels=80,
+                    intensity=1,
+                    threshold=0.1
+                )
+            ]
+        )
     )
-    
-    )
-    
+
+# Tab 2: Trends By Building Function
 with tab2:
-    
     col5, col6 = st.columns(2)
-    # Building funcs
     with col5:
         st.markdown(
-            f"<h3 style='text-align: center;'>{trans("Number of Rooms by Building Function")}</h1>",
+            f"<h3 style='text-align: center;'>{trans('Number of Rooms by Building Function')}</h3>",
             unsafe_allow_html=True
         )
         rooms = pd.read_csv("rooms.csv")
         func_val_counts = rooms["building_func"].value_counts()
         st.table(func_val_counts)
+
     with col6:
         st.markdown(
-            f"<h3 style='text-align: center;'>{trans("Average Monthly Heat Consumption / m² by Function")}</h1>",
+            f"<h3 style='text-align: center;'>{trans('Average Monthly Heat Consumption / m² by Function')}</h3>",
             unsafe_allow_html=True
         )
         func_df = pd.read_csv("func_df.csv")
         bar_chart = alt.Chart(func_df).mark_bar().encode(
-        y=alt.Y('building_func:N', sort='-x', title=trans('Building Function')),
-        x=alt.X('eff:Q', title="kWh / m²"),
-        color=alt.value("#fcaa01")
-        ).properties(height=600
-        )
+            y=alt.Y("building_func:N", sort="-x", title=trans("Building Function")),
+            x=alt.X("eff:Q", title="kWh / m²"),
+            color=alt.value("#fcaa01")
+        ).properties(height=600)
         st.altair_chart(bar_chart, use_container_width=True)
-    #------------------------------------------------
-    # Yearly consumption by building func
+
+    st.write(trans("### Yearly Consumption trend by building function"))
     heat_cons_by_func = pd.read_csv("heat_cons_by_func.csv")
     wat_cons_by_func = pd.read_csv("wat_cons_by_func.csv")
-    st.write(trans("### Yearly Consumption trend by building function"))
     opt_csv = {
-            'Heat, kWh': heat_cons_by_func,
-            'Hot water, m³': wat_cons_by_func,
-            "Šiluma, kWh": heat_cons_by_func,
-            "Karštas vanduo, m³": wat_cons_by_func
-        }
+        "Heat, kWh": heat_cons_by_func,
+        "Hot water, m³": wat_cons_by_func,
+        "Šiluma, kWh": heat_cons_by_func,
+        "Karštas vanduo, m³": wat_cons_by_func
+    }
     res_lt = opt_csv[res_side]
-
-    df_melted = res_lt.melt(id_vars=['year'], var_name='Category', value_name='Value')
-
+    df_melted = res_lt.melt(id_vars=["year"], var_name="Category", value_name="Value")
     chart = alt.Chart(df_melted).mark_bar().encode(
-        x=alt.X('year:O', title='Year', scale=alt.Scale(zero=False)),
-        y=alt.Y('sum(Value):Q', title=res_side, scale=alt.Scale(zero=False)),
-        color='Category:N',
-        order=alt.Order('Value', sort="descending")
-    ).properties(
-        width=600,
-        height=400).interactive()
+        x=alt.X("year:O", title="Year", scale=alt.Scale(zero=False)),
+        y=alt.Y("sum(Value):Q", title=res_side, scale=alt.Scale(zero=False)),
+        color="Category:N",
+        order=alt.Order("Value", sort="descending")
+    ).properties(width=600, height=400).interactive()
     st.altair_chart(chart, use_container_width=True)
 
-    
+# Tab 3: Rooms Data
 with tab3:
-
     col7, col8 = st.columns(2)
     with col7:
         st.markdown(
-        f"<h1 style='font-size: 48px; text-align: center;'>{trans("No. Unique rooms")}</h1>",
-        unsafe_allow_html=True
-    )
+            f"<h1 style='font-size: 48px; text-align: center;'>{trans('No. Unique rooms')}</h1>",
+            unsafe_allow_html=True
+        )
         st.markdown(
-        "<h1 style='font-size: 72px; text-align: center;'>44900</h1>",
-        unsafe_allow_html=True
-    )
+            "<h1 style='font-size: 72px; text-align: center;'>44900</h1>",
+            unsafe_allow_html=True
+        )
         area_df = pd.read_csv("area_df.csv")
         st.header(trans("Average Heat Consumption / m² against Room Area"))
-
         chart = alt.Chart(area_df).mark_bar().encode(
             x=alt.X("area_bins:N", sort="-y", title=trans("Room Area, m²")),
             y=alt.Y("eff:Q", title="kWh / m²"),
             color=alt.value("#fcaa01")
         )
         st.altair_chart(chart, use_container_width=True)
+
     with col8:
         st.markdown(
-        f"<h1 style='font-size: 48px; text-align: center;'>{trans("No. Unique buildings")}</h1>",
-        unsafe_allow_html=True
-    )
+            f"<h1 style='font-size: 48px; text-align: center;'>{trans('No. Unique buildings')}</h1>",
+            unsafe_allow_html=True
+        )
         st.markdown(
-        "<h1 style='font-size: 72px; text-align: center;'>1421</h1>",
-        unsafe_allow_html=True
-    )
+            "<h1 style='font-size: 72px; text-align: center;'>1421</h1>",
+            unsafe_allow_html=True
+        )
         st.markdown(
-        f"<h1 style='font-size: 48px; text-align: center;'>{trans("Average room area")}</h1>",
-        unsafe_allow_html=True
-    )
+            f"<h1 style='font-size: 48px; text-align: center;'>{trans('Average room area')}</h1>",
+            unsafe_allow_html=True
+        )
         st.markdown(
-        "<h1 style='font-size: 72px; text-align: center;'>71.6 m²</h1>",
-        unsafe_allow_html=True
-    )
+            "<h1 style='font-size: 72px; text-align: center;'>71.6 m²</h1>",
+            unsafe_allow_html=True
+        )
         st.markdown(
-        f"<h1 style='font-size: 48px; text-align: center;'>{trans("Biggest room area")}</h1>",
-        unsafe_allow_html=True
-    )
+            f"<h1 style='font-size: 48px; text-align: center;'>{trans('Biggest room area')}</h1>",
+            unsafe_allow_html=True
+        )
         st.markdown(
-        "<h1 style='font-size: 72px; text-align: center;'>40760 m²</h1>",
-        unsafe_allow_html=True
-    )
+            "<h1 style='font-size: 72px; text-align: center;'>40760 m²</h1>",
+            unsafe_allow_html=True
+        )
 
     st.write(trans("From the graph above we can see that as the room area increases the average heat consumption per square meter actually decreases, meaning it is more efficient to provide heating for larger rooms rather than smaller ones."))
     st.write(trans("## Number of Rooms per buyer, Top 20 buyers"))
     st.write(trans("From this bar chart, we can see that a few buyers possess hundreds of rooms, but we can’t identify who they are because the data about the buyers in the dataset is anonymized."))
     buyer_rooms = pd.read_csv("buyer_rooms.csv")
-    st.bar_chart(buyer_rooms["room_id"], x_label=trans("Individual buyers"), y_label=trans("No. Rooms"), color="#fcaa01")
-    
+    st.bar_chart(
+        buyer_rooms["room_id"],
+        x_label=trans("Individual buyers"),
+        y_label=trans("No. Rooms"),
+        color="#fcaa01"
+    )
 
-    #-------------------------------------------
-    # Consumption by building year
-
-    heat_by_build_year = pd.read_csv("heat_by_build_year.csv")
     st.write(trans("## Average Heat Consumption / m² by buildings build year"))
     st.write(trans("Over time we can see that heat consumption decreases as buildings get younger, which can be attributed to better construction and insulation technology. Specifically buildings built after 1940 and then 2000 have lower consumption heat consumption on average"))
-    st.bar_chart(heat_by_build_year, x="build_year", y="eff", y_label="kWh / m²", x_label=trans("Build Year"), color="#fcaa01")
-    #------------------------------------------------------------------
+    heat_by_build_year = pd.read_csv("heat_by_build_year.csv")
+    st.bar_chart(
+        heat_by_build_year,
+        x="build_year",
+        y="eff",
+        y_label="kWh / m²",
+        x_label=trans("Build Year"),
+        color="#fcaa01"
+    )
+
     st.write(trans("# Oldest building was built in -- 1849"))
     st.write(trans("# Most frequent build year -- 1970 (1924 buildings)"))
-
     st.write(trans("## Geospatial building age heatmap"))
     st.write(trans("Green color means newer buildings, blue is older buildings"))
     geo_build = pd.read_csv("geo_build.csv")
     geo_build = geo_build[geo_build["build_year"] > 1900]
     st.pydeck_chart(
-    pdk.Deck(
-        map_style=None,
-        initial_view_state=pdk.ViewState(
-            latitude=55.9192288419136,
-            longitude=23.29157347671509,
-            zoom=11.6,
-            pitch=50,
-        ),
-        layers=[
-            pdk.Layer(
-                "HeatmapLayer",
-                data=geo_build,
-                get_position="[x_coord, y_coord]",
-                get_weight="build_year",
-                radiusPixels=80,
-                intensity=1,
-                threshold=0.1,
-                colorRange=[
+        pdk.Deck(
+            map_style=None,
+            initial_view_state=pdk.ViewState(
+                latitude=55.9192288419136,
+                longitude=23.29157347671509,
+                zoom=11.6,
+                pitch=50
+            ),
+            layers=[
+                pdk.Layer(
+                    "HeatmapLayer",
+                    data=geo_build,
+                    get_position="[x_coord, y_coord]",
+                    get_weight="build_year",
+                    radiusPixels=80,
+                    intensity=1,
+                    threshold=0.1,
+                    colorRange=[
                         [0, 128, 128, 255],  # Teal
                         [64, 160, 160, 255],  # Intermediate teal
                         [128, 192, 192, 255],  # Light teal
                         [144, 238, 144, 255]  # Light green
                     ]
-            )
-            
-        ],
+                )
+            ]
+        )
     )
-    )
+
     st.write(trans("# Median amount of floors per building -- 5 Floors"))
     st.write(trans("# Highest building -- 15 floors"))
-
     st.write(trans("## Geospatial building floors heatmap"))
     st.write(trans("Red color means higher buildings with more floors, blue are lower buildings with less floors"))
     geo_floors = pd.read_csv("geo_floors.csv")
     st.pydeck_chart(
-    pdk.Deck(
-        map_style=None,
-        initial_view_state=pdk.ViewState(
-            latitude=55.9192288419136,
-            longitude=23.29157347671509,
-            zoom=11.6,
-            pitch=50,
-        ),
-        layers=[
-            pdk.Layer(
-                "HeatmapLayer",
-                data=geo_floors,
-                get_position="[x_coord, y_coord]",
-                get_weight="building_floors",
-                radiusPixels=80,
-                color_domain=[1, 15],
-                intensity=1,
-                threshold=0.1,
-            )
-            
-        ],
-    )
+        pdk.Deck(
+            map_style=None,
+            initial_view_state=pdk.ViewState(
+                latitude=55.9192288419136,
+                longitude=23.29157347671509,
+                zoom=11.6,
+                pitch=50
+            ),
+            layers=[
+                pdk.Layer(
+                    "HeatmapLayer",
+                    data=geo_floors,
+                    get_position="[x_coord, y_coord]",
+                    get_weight="building_floors",
+                    radiusPixels=80,
+                    color_domain=[1, 15],
+                    intensity=1,
+                    threshold=0.1
+                )
+            ]
+        )
     )
 
+# Tab 4: AI Consumption Estimation Tool
 with tab4:
-    # Initialize features in Session State if not already present
+    # Initialize session state features
     if "features" not in st.session_state:
         st.session_state.features = {
             "legal_entity": False,
@@ -540,73 +561,90 @@ with tab4:
             "room_area": 50.0,
             "build_year": 1971,
             "building_floors": 5,
-            "building_func": 'Gyvenamasis (trijų ir daugiau butų - daugiaaukštis pastatas)',
+            "building_func": "Gyvenamasis (trijų ir daugiau butų - daugiaaukštis pastatas)",
             "x_coord": 456969.719985,
             "y_coord": 6199673.340395
         }
-
     features = st.session_state.features
-    # Title of the web app
-    st.title(trans("AI Energy consumption estimation tool"))
-    st.markdown(f"### {trans("What does this tool do?")}")
+
+    st.title(trans("AI Consumption Estimation Tool"))
+    st.markdown(f"### {trans('What does this tool do?')}")
     st.markdown(trans("""Armed with specific data and metrics about a room, this sophisticated AI tool can precisely forecast the monthly consumption of heat and hot water for that space. Applications include: efficient energy management in residential and commercial buildings, optimizing heating schedules to reduce costs and environmental impact, assisting in the design of energy-efficient homes and buildings"""))
-    
-    st.markdown(f"### {trans("How to use the tool?")}")
+
+    st.markdown(f"### {trans('How to use the tool?')}")
     st.markdown(trans("Use the displayed sliders and input boxes to select the various metrics of the room, which helps the AI model give an accurate prediction. In order to select the coordinates of where the room is located, simply click on the map on the location of the relevant building, the map can be dragged around and zoomed in/out. The month of the year field specifies for which month of the year to predict energy consumption. If the number `6` is supplied, the energy consumption will be calculated for the month of june. Lastly, in order to get an estimation simply click the button below that says `Predict Energy Consumption`. After waiting a second for the model to finish calculations, a field should appear below the button, with the predictions for heat and hot water consumed for that month. More information about the AI model is at the bottom of the page"))
 
-    st.markdown(f"""
-    <div style='background-color: #fff3cd; padding: 10px; border-radius: 5px; border: 1px solid #ffeeba; color: #856404;'>
-        {trans("<strong>Note:</strong> The AI predicts heat consumption in kWh with an average error of about 100 kWh, based on historical data. Results may vary depending on real-world conditions. The average error for hot water consumption is ~1 m³.")}
-    </div>
-    """, unsafe_allow_html=True)
-    # Input fields using columns for a more compact layout
-    st.markdown(f"### {trans("Please enter the required information")}")
+    st.markdown(
+        f"""
+        <div style='background-color: #fff3cd; padding: 10px; border-radius: 5px; border: 1px solid #ffeeba; color: #856404;'>
+            {trans('<strong>Note:</strong> The AI predicts heat consumption in kWh with an average error of about 100 kWh, based on historical data. Results may vary depending on real-world conditions. The average error for hot water consumption is ~1 m³.')}
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    st.markdown(f"### {trans('Please enter the required information')}")
     col1, col2, col3 = st.columns(3)
 
     with col1:
         features["legal_entity"] = st.checkbox(trans("Is the buyer a legal entity?"))
-        features["building_floors"] = st.slider(trans("Number of floors in the building"), min_value=1, max_value=15, step=1, value=5)
+        features["building_floors"] = st.slider(
+            trans("Number of floors in the building"),
+            min_value=1,
+            max_value=15,
+            step=1,
+            value=5
+        )
         features["room_area"] = st.number_input(
-            trans("Room area, m²"), 
-            min_value=0.0, 
-            max_value=40000.0, 
-            value=50.0,  # Default value from session state
-            step=10.0, 
-            format="%.1f"  # Display with 1 decimal place
+            trans("Room area, m²"),
+            min_value=0.0,
+            max_value=40000.0,
+            value=50.0,
+            step=10.0,
+            format="%.1f"
         )
 
-        
-
     with col2:
-        features["build_year"] = st.number_input(trans("Year that the building was built"), min_value=1849, step=1, value=1970)
-        features["month"] = st.number_input(trans("Month of the year (1-12)"), min_value=1, max_value=12, step=1)
-        features["building_func"] = st.selectbox(trans("Building function"), ['Transporto','Maitinimo','Gyvenamasis (individualus pastatas)','Gydymo',
-'Religinės' ,'Kita' ,'Administracinė', 'Kultūros' ,'Gamybos' ,'Gyvenamasis (trijų ir daugiau butų - daugiaaukštis pastatas)', 'Prekybos', 'Sporto', 'Komercinės paskirties', 'Mokslo' ,'Viešbučių', 'Sandėliavimo'])
+        features["build_year"] = st.number_input(
+            trans("Year that the building was built"),
+            min_value=1849,
+            step=1,
+            value=1970
+        )
+        features["month"] = st.number_input(
+            trans("Month of the year (1-12)"),
+            min_value=1,
+            max_value=12,
+            step=1
+        )
+        features["building_func"] = st.selectbox(
+            trans("Building function"),
+            [
+                "Transporto", "Maitinimo", "Gyvenamasis (individualus pastatas)", "Gydymo",
+                "Religinės", "Kita", "Administracinė", "Kultūros", "Gamybos",
+                "Gyvenamasis (trijų ir daugiau butų - daugiaaukštis pastatas)", "Prekybos",
+                "Sporto", "Komercinės paskirties", "Mokslo", "Viešbučių", "Sandėliavimo"
+            ]
+        )
 
     with col3:
         from pyproj import Transformer
-        transformer = Transformer.from_crs('epsg:4326', 'epsg:3346', always_xy=True)
+        transformer = Transformer.from_crs("epsg:4326", "epsg:3346", always_xy=True)
         st.subheader(trans("Select Coordinates"))
         map_center = [55.9292, 23.3102]
-        map = folium.Map(location=map_center, zoom_start=12)
-        #-
-        marker = folium.Marker(location=map_center)
-        map.add_child(marker)
-
-        click = folium.LatLngPopup()
-        map.add_child(click)
-
-        map_data = st_folium(map, height=300, width=300)
-
+        map_obj = folium.Map(location=map_center, zoom_start=12)
+        folium.Marker(location=map_center).add_to(map_obj)
+        folium.LatLngPopup().add_to(map_obj)
+        map_data = st_folium(map_obj, height=300, width=300)
         x_coord, y_coord = map_center[0], map_center[1]
-        if map_data and 'last_clicked' in map_data and map_data['last_clicked']:
-            x_coord, y_coord = map_data['last_clicked']['lat'], map_data['last_clicked']['lng']
+        if map_data and "last_clicked" in map_data and map_data["last_clicked"]:
+            x_coord, y_coord = map_data["last_clicked"]["lat"], map_data["last_clicked"]["lng"]
             x_coord, y_coord = transformer.transform(y_coord, x_coord)
             features["x_coord"] = x_coord
             features["y_coord"] = y_coord
-    
 
-    st.markdown("""
+    st.markdown(
+        """
         <style>
         div.stButton > button:first-child {
             height: 3em;
@@ -615,44 +653,47 @@ with tab4:
             margin-top: 20px;
         }
         </style>
-    """, unsafe_allow_html=True)
+        """,
+        unsafe_allow_html=True
+    )
 
-    # Center the button and make prediction
     if st.button(trans("Predict Energy Consumption")):
         preds_heat = get_prediction([features.values()])
         preds_wat = get_prediction([features.values()], "xgb_wat_v1.sav", "column_transformer_wat.pkl")
-        
-        # Display results in a styled container
-        st.markdown(f"""
+        st.markdown(
+            f"""
             <div style='background-color: #f8f9fa; padding: 20px; border-radius: 10px; margin-top: 20px;'>
-                <h3 style='color: #2c3e50;'>{trans("Prediction Results")}</h3>
+                <h3 style='color: #2c3e50;'>{trans('Prediction Results')}</h3>
                 <div style='display: flex; justify-content: space-between;'>
                     <div style='background-color: #e8f5e9; padding: 15px; border-radius: 8px; width: 48%;'>
-                        <h4 style='color: #2ecc71; margin: 0;'>{trans("Heat Consumption")}</h4>
-                        <p style='font-size: 24px; color: #2ecc71; margin: 5px 0 0 0;'>{float(preds_heat):.2f} kWh / {trans("month")}</p>
+                        <h4 style='color: #2ecc71; margin: 0;'>{trans('Heat Consumption')}</h4>
+                        <p style='font-size: 24px; color: #2ecc71; margin: 5px 0 0 0;'>{float(preds_heat):.2f} kWh / {trans('month')}</p>
                     </div>
                     <div style='background-color: #e3f2fd; padding: 15px; border-radius: 8px; width: 48%;'>
-                        <h4 style='color: #3498db; margin: 0;'>{trans("Hot Water Consumption")}</h4>
-                        <p style='font-size: 24px; color: #3498db; margin: 5px 0 0 0;'>{float(preds_wat):.2f} m³ / {trans("month")}</p>
+                        <h4 style='color: #3498db; margin: 0;'>{trans('Hot Water Consumption')}</h4>
+                        <p style='font-size: 24px; color: #3498db; margin: 5px 0 0 0;'>{float(preds_wat):.2f} m³ / {trans('month')}</p>
                     </div>
                 </div>
             </div>
-        """, unsafe_allow_html=True)
-    st.markdown(f"### {trans("Technical description of the AI model")}")
+            """,
+            unsafe_allow_html=True
+        )
+
+    st.markdown(f"### {trans('Technical description of the AI model')}")
     st.markdown(f"""
-    ### 1. {trans("The data")}
+    ### 1. {trans('The data')}
     {trans("The data used to train the model was sourced from Lithuania's open data portal, data.gov.lt, and includes records up to 2025. Preparing the data for modeling required extensive preprocessing. For instance, geographical coordinates needed to be converted from one system to another. Additionally, the dataset contained multiple records for the same room and time period under a specific service category, such as 'heat', though another column provided more detailed classifications. Since these records shared the same units, I aggregated them by summing their values. This reduced, for example, five separate entries for a single room and time period into one consolidated figure, which the model then predicts.")}
     """)
     st.image("explanation.png")
     st.markdown(f"""
-    ### 2. {trans("The model")}
-    {trans("For this tool, I employed an XGBoost model, which leverages Gradient Boosted Decision Trees. While I considered alternative models, my experience—particularly from data science competitions on Kaggle—has shown that libraries like XGBoost and CatBoost often deliver top-tier performance for tabular datasets. This made XGBoost a confident choice. The model is both efficient and lightweight. During training, its hyperparameters were optimized using Optuna, a widely recognized industry-standard library.")}
+    ### 2. {trans('The model')}
+    {trans('For this tool, I employed an XGBoost model, which leverages Gradient Boosted Decision Trees. While I considered alternative models, my experience—particularly from data science competitions on Kaggle—has shown that libraries like XGBoost and CatBoost often deliver top-tier performance for tabular datasets. This made XGBoost a confident choice. The model is both efficient and lightweight. During training, its hyperparameters were optimized using Optuna, a widely recognized industry-standard library.')}
 
-    ### 3. {trans("Evaluation")}
-    {trans("The model’s performance was assessed using two metrics: Mean Absolute Error (MAE) and Root Mean Squared Error (RMSE). Across the test set, the MAE for heat consumption is 140 kWh, indicating an average prediction error of about 140 kWh. However, this figure is somewhat inflated by extreme values where the model’s predictions deviate significantly. For most samples, the average error is closer to 90 kWh, with some predictions as accurate as 15, 30, or 50 kWh off. Generally, larger predicted values correlate with larger errors, likely due to the scarcity of high-energy-consumption samples in the dataset. This skews the heat consumption feature heavily. While these high values could be considered outliers, they are not errors, so I opted to retain them. The RMSE, at around 800 kWh, confirms that the model struggles more with outliers, as expected.")}
+    ### 3. {trans('Evaluation')}
+    {trans('The model’s performance was assessed using two metrics: Mean Absolute Error (MAE) and Root Mean Squared Error (RMSE). Across the test set, the MAE for heat consumption is 140 kWh, indicating an average prediction error of about 140 kWh. However, this figure is somewhat inflated by extreme values where the model’s predictions deviate significantly. For most samples, the average error is closer to 90 kWh, with some predictions as accurate as 15, 30, or 50 kWh off. Generally, larger predicted values correlate with larger errors, likely due to the scarcity of high-energy-consumption samples in the dataset. This skews the heat consumption feature heavily. While these high values could be considered outliers, they are not errors, so I opted to retain them. The RMSE, at around 800 kWh, confirms that the model struggles more with outliers, as expected.')}
 
-    {trans("The model excels at predicting heat consumption in kWh but performs poorly with hot water consumption. Its MAE for hot water prediction is approximately 1 m³, meaning it errs by about 1 cubic meter on average. This larger error makes sense, as hot water consumption is inherently harder to predict than heat consumption. Given this limitation, I’d advise against deploying the model for hot water predictions in a production environment.")}
+    {trans('The model excels at predicting heat consumption in kWh but performs poorly with hot water consumption. Its MAE for hot water prediction is approximately 1 m³, meaning it errs by about 1 cubic meter on average. This larger error makes sense, as hot water consumption is inherently harder to predict than heat consumption. Given this limitation, I’d advise against deploying the model for hot water predictions in a production environment.')}
 
-    {trans("Below is a sample from the test set used to evaluate the model. It compares actual values from the dataset with the AI’s predictions, showcasing impressive results, especially for heat consumption. In some cases, the model is off by 300 kWh or 50 kWh, while in others, it’s spot-on with a difference of 0 kWh. The Actual column reflects the real values the AI aims to match, the Preds column displays the AI’s predictions, and the Diff column indicates the difference between them, revealing the model’s error in units.")}
+    {trans('Below is a sample from the test set used to evaluate the model. It compares actual values from the dataset with the AI’s predictions, showcasing impressive results, especially for heat consumption. In some cases, the model is off by 300 kWh or 50 kWh, while in others, it’s spot-on with a difference of 0 kWh. The Actual column reflects the real values the AI aims to match, the Preds column displays the AI’s predictions, and the Diff column indicates the difference between them, revealing the model’s error in units.')}
     """)
     st.image("sample.png")

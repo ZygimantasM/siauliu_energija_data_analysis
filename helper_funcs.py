@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import pickle
-#
+
 def get_prediction(data_array, model_path='xgb_v1.sav', col_trans_path = 'column_transformer.pkl'):
   
     df = pd.DataFrame(data_array, columns=["legal_entity", "month", "room_area", "build_year", "building_floors", "building_func", "x_coord", "y_coord"])
