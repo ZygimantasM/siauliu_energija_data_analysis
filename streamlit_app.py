@@ -97,15 +97,41 @@ lt_mappings = {
     "What does this tool do?": "Ką šis įrankis daro?",
     """Armed with specific data and metrics about a room, this sophisticated AI tool can precisely forecast the monthly consumption of heat and hot water for that space. Applications include: efficient energy management in residential and commercial buildings, optimizing heating schedules to reduce costs and environmental impact, assisting in the design of energy-efficient homes and buildings""": """
     Turėdamas konkrečius duomenis ir matavimus patalpos, šis išmanusis DI įrankis gali tiksliai prognozuoti mėnesinį šilumos ir karšto vandens suvartojimą toje erdvėje. Naudojimo sritys: efektyvus energijos valdymas gyvenamuosiuose ir komerciniuose pastatuose, šildymo grafikų optimizavimas siekiant sumažinti išlaidas ir poveikį aplinkai, pagalba projektuojant energiją taupančius namus ir pastatus
-    """
-
-
-
-
-
+    """,
+    "About": "Apie",
+    "Quick How-to": "Kaip naudotis puslapiu?",
+    "Purpose": "Projekto prasmė",
+    "Technical Skills Used": "Naudoti techniniai įgūdžiai",
+    "Challenges": "Iššūkiai",
+    "Improvements": "Ka galima patobulinti?",
+    "This web app serves as a data analytics and data science project, exploring energy consumption data in Šiauliai, Lithuania. The data, collected by AB 'Šiaulių Energija', is publicly available on [data.gov.lt](https://data.gov.lt/datasets/2886/). The app features various graphs, heatmaps, and statistics designed to deliver valuable insights for stakeholders. It also includes an advanced AI tool that estimates energy consumption for rooms, offering practical real-world applications. The project is open-source and available on [GitHub](https://github.com).": "Ši internetinė programėlė yra duomenų analizės ir duomenų mokslo projektas, tyrinėjantis energijos vartojimo duomenis Šiauliuose. Duomenis, surinktus AB 'Šiaulių Energija', galima rasti viešai [data.gov.lt](https://data.gov.lt/datasets/2886/). Programėlė pateikia įvairius grafikus, šilumos žemėlapius ir statistiką, skirta suteikti vertingų įžvalgų suinteresuotiems asmenims. Programėleje taip pat galima rasti pažangų DI įrankį, kuris apskaičiuoja mėnesinį energijos suvartojimą patalpose, šis įrankis suteikia praktinių realaus pasaulio taikymo galimybių. Projektas yra atvirojo kodo ir prieinamas [GitHub](https://github.com).",
+    "Although I recently began my bachelor’s degree in Data Science and Applied Mathematics, I have a deep passion for self-learning and have been studying data science for nearly two years. To build my skills, I’ve completed numerous courses, read extensively, and participated in data science competitions, all to prepare for a career in this field. Seeking to apply my knowledge, I explored project ideas to strengthen my portfolio. While browsing public data websites, I discovered a dataset on energy consumption in my hometown, Šiauliai. This dataset piqued my interest due to its potential for both data analytics and the creation of practical machine learning (AI) models. To share my findings effectively, I developed this web app to present the results in a user-friendly and accessible way. After roughly 80 hours of effort, I completed the project and am delighted with the outcome.": "Nors neseniai pradėjau duomenų mokslo bakalauro studijas, laisvalaikių mėgstu gilinti savo žinias šioje srityje. Duomenų moksla studijuoju savarankiškai beveik dvejus metus. Siekdamas tobulinti savo įgūdžius, baigiau daugybę kursų, skaičiau knygas ir dalyvavau duomenų mokslo konkursuose, visa tai ruošiantis karjerai šioje srityje. Siekdamas pritaikyti savo žinias, ieškojau projekto idėjų, kad pastiprinčiau savo portfolio. Naršydamas viešų duomenų svetainėse, atradau duomenų rinkinį apie energijos suvartojimą mano mieste -- Šiauliuose. Šis duomenų rinkinys mane sudomino dėl savo potencialo tiek duomenų analizei, tiek praktinių mašininio mokymosi (AI) modelių kūrimui. Siekdamas efektyviai pasidalinti savo atradimais, sukūriau šią internetinę programėlę, kad pateikčiau rezultatus patogia ir prieinama forma. Po maždaug 80 valandų darbo baigiau projektą ir esu labai patenkintas rezultatu.",
+    "Get started with these simple steps:": "Pradėkite šiais paprastais žingsniais:",
+    "**Open the Sidebar**: Access the sidebar on the left side of the web app.": "**Atidarykite Šoninį Meniu**: Pasiekite šoninį meniu, esantį kairėje internetinės programėlės pusėje.",
+    "**Choose Language**: Select your preferred language—English or Lithuanian.": "**Pasirinkite Kalbą**: Pasirinkite norimą kalbą – anglų arba lietuvių.",
+    "**Select Data**: Pick the type of data to view (heat consumption or hot water consumption). The website will update automatically based on your choice.": "**Pasirinkite Duomenis**: Pasirinkite, kokio tipo duomenis norite peržiūrėti (šilumos vartojimo ar karšto vandens vartojimo). Svetainė automatiškai atsinaujins pagal jūsų pasirinkimą.",
+    "**Explore Tabs**: Click the tabs in the center of the page to navigate through the content.": "**Naršykite Skirtukus**: Spauskite skirtukus puslapio centre, kad naršytumėte turinį.",
+    "Most graphs are interactive and can be explored in detail, as can the 3D heatmaps.": "Dauguma grafikų yra interaktyvūs ir gali būti išsamiai tyrinėjami, taip pat ir 3D šilumos žemėlapiai.",
+    "To bring this project to life, I drew on my expertise in data science, Python, and a range of data science libraries. My workflow included:": "Siekdamas įgyvendinti šį projektą, remiausi savo duomenų mokslo, Python ir įvairių duomenų mokslo bibliotekų ekspertize. Mano darbo eiga apėmė:",
+    "**Environment Setup**: Managing Python environments, Linux VMs, packages, and Jupyter notebooks.": "**Aplinkos Sukūrimas**: Python aplinkų, Linux VM, paketų ir Jupyter notebook valdymas.",
+    "**Data Processing**: Using Pandas, NumPy, and Matplotlib to clean, manipulate, and visualize data.": "**Duomenų Apdorojimas**: Pandas, NumPy ir Matplotlib naudojimas duomenų valymui, manipuliavimui ir vizualizavimui.",
+    "**Modeling**: Leveraging Scikit-learn and XGBoost for model development and evaluation, with Optuna for optimization to boost performance.": "**Modeliavimas**: Scikit-learn ir XGBoost naudojimas modelių kūrimui ir vertinimui, su Optuna optimizavimui, siekiant pagerinti našumą.",
+    "**Web Development**: Learning Streamlit to build the web application.": "**Internetinės Programėlės Kūrimas**: Streamlit naudojimas kuriant internetinę programėlę.",
+    "**Version Control**: Utilizing GitHub for tracking changes and deploying the app online.": "**Versijos valdymas**: GitHub naudojimas projektui",
+    "These skills enabled me to transform raw data into a functional and insightful tool.": "Šie įgūdžiai leido man paversti paprastus duomenis į funkcionalią ir naudingą priemonę.",
+    "The project presented several obstacles, including:": "Projektas susidūrė su keliais sunkumais, įskaitant:",
+    "**Hardware Limitations**: Downloading and processing a large dataset on a low-performance computer, which significantly delayed model training and optimization.": "**Aparatinės įrangos apribojimai**: Didelio duomenų kiekio atsisiuntimas ir apdorojimas žemo našumo kompiuteryje, kas irgi labai sulėtino modelio treniravimo procesą ir optimizavimą.",
+    "**Translation**: Translating the entire web app into English and Lithuanian, a straightforward but time-intensive task.": "**Vertimas**: Visos internetinės programėlės vertimas į anglų ir lietuvių kalbas – paprasta, bet daug laiko reikalaujanti užduotis.",
+    "**Ideation**: Brainstorming ideas for graphs and statistics that would be both relevant and useful to users.": "**Idėjų generavimas**: Teko daug pagalvoti apie grafikus ir statistika, kuri būtų tiek aktuali, tiek naudinga naudotojams.",
+    "Overcoming these hurdles required persistence and creative problem-solving.": "Šių kliūčių įveikimas reikalavo atkaklumo ir kūrybiško problemų sprendimo.",
+    "While I achieved most of my initial objectives, there’s room for enhancement:": "Nors pasiekiau daugumą savo pradinių tikslų, yra kur tobulėti:",
+    "**Data Updates**: An issue with the source website prevented me from obtaining a complete 2024 dataset, leaving some graphs without this year’s data due to its incompleteness.": "**Duomenų atnaujinimai**: Problema su šaltinio svetaine neleido man gauti pilno 2024 metų duomenų rinkinio, todėl kai kurie grafikai neturi šių metų duomenų dėl jų neišsamumo.",
+    "**Performance**: The web app could be smoother, with techniques like caching offering potential optimization.": "**Veikimas**: Internetinė programėlė galėtų veikti sklandžiau, pasitelkiant kelis programavimo būdus",
+    "These areas provide opportunities for future refinement as I continue to develop the project.": "Šie trūkumai suteikia galimybių patobulinti puslapį ateityje, toliau vystant projektą" 
 
 
     
+
 
 
 
@@ -160,50 +186,50 @@ intro, tab1, tab2, tab3, tab4 = st.tabs(["Intro", trans("Overall Consumption Tre
 
 with intro:
     st.header("Introduction")
-    st.markdown("""
-    ## About
-    This web app serves as a data analytics and data science project, exploring energy consumption data in Šiauliai, Lithuania. The data, collected by AB "Šiaulių Energija," is publicly available on [data.gov.lt](https://data.gov.lt). The app features various graphs, heatmaps, and statistics designed to deliver valuable insights for stakeholders. It also includes an advanced AI tool that estimates energy consumption for rooms, offering practical real-world applications. The project is open-source and available on [GitHub](https://github.com).
+    st.markdown(f"""
+    ## {trans("About")}
+    {trans("This web app serves as a data analytics and data science project, exploring energy consumption data in Šiauliai, Lithuania. The data, collected by AB 'Šiaulių Energija', is publicly available on [data.gov.lt](https://data.gov.lt/datasets/2886/). The app features various graphs, heatmaps, and statistics designed to deliver valuable insights for stakeholders. It also includes an advanced AI tool that estimates energy consumption for rooms, offering practical real-world applications. The project is open-source and available on [GitHub](https://github.com).")}
     
-    ## Quick How-to
-    Get started with these simple steps:
+    ## {trans("Quick How-to")}
+    {trans("Get started with these simple steps:")}
 
-    1. **Open the Sidebar**: Access the sidebar on the left side of the web app.
-    2. **Choose Language**: Select your preferred language—English or Lithuanian.
-    3. **Select Data**: Pick the type of data to view (heat consumption or hot water consumption). The website will update automatically based on your choice.
-    4. **Explore Tabs**: Click the tabs in the center of the page to navigate through the content.
+    1. {trans("**Open the Sidebar**: Access the sidebar on the left side of the web app.")}
+    2. {trans("**Choose Language**: Select your preferred language—English or Lithuanian.")}
+    3. {trans("**Select Data**: Pick the type of data to view (heat consumption or hot water consumption). The website will update automatically based on your choice.")}
+    4. {trans("**Explore Tabs**: Click the tabs in the center of the page to navigate through the content.")}
 
-    Most graphs are interactive and can be explored in detail, as can the 3D heatmaps.
+    {trans("Most graphs are interactive and can be explored in detail, as can the 3D heatmaps.")}
 
-    ## Purpose
-    Although I recently began my bachelor’s degree in Data Science and Applied Mathematics, I have a deep passion for self-learning and have been studying data science for nearly two years. To build my skills, I’ve completed numerous courses, read extensively, and participated in data science competitions, all to prepare for a career in this field. Seeking to apply my knowledge, I explored project ideas to strengthen my portfolio. While browsing public data websites, I discovered a dataset on energy consumption in my hometown, Šiauliai. This dataset piqued my interest due to its potential for both data analytics and the creation of practical machine learning (AI) models. To share my findings effectively, I developed this web app to present the results in a user-friendly and accessible way. After roughly 80 hours of effort, I completed the project and am delighted with the outcome.
+    ## {trans("Purpose")}
+    {trans("Although I recently began my bachelor’s degree in Data Science and Applied Mathematics, I have a deep passion for self-learning and have been studying data science for nearly two years. To build my skills, I’ve completed numerous courses, read extensively, and participated in data science competitions, all to prepare for a career in this field. Seeking to apply my knowledge, I explored project ideas to strengthen my portfolio. While browsing public data websites, I discovered a dataset on energy consumption in my hometown, Šiauliai. This dataset piqued my interest due to its potential for both data analytics and the creation of practical machine learning (AI) models. To share my findings effectively, I developed this web app to present the results in a user-friendly and accessible way. After roughly 80 hours of effort, I completed the project and am delighted with the outcome.")}
 
-    ## Technical Skills Used
-    To bring this project to life, I drew on my expertise in data science, Python, and a range of data science libraries. My workflow included:
+    ## {trans("Technical Skills Used")}
+    {trans("To bring this project to life, I drew on my expertise in data science, Python, and a range of data science libraries. My workflow included:")}
 
-    - **Environment Setup**: Managing Python environments, Linux VMs, packages, and Jupyter notebooks.
-    - **Data Processing**: Using Pandas, NumPy, and Matplotlib to clean, manipulate, and visualize data.
-    - **Modeling**: Leveraging Scikit-learn and XGBoost for model development and evaluation, with Optuna for optimization to boost performance.
-    - **Web Development**: Learning Streamlit to build the web application.
-    - **Version Control**: Utilizing GitHub for tracking changes and deploying the app online.
+    - {trans("**Environment Setup**: Managing Python environments, Linux VMs, packages, and Jupyter notebooks.")}
+    - {trans("**Data Processing**: Using Pandas, NumPy, and Matplotlib to clean, manipulate, and visualize data.")}
+    - {trans("**Modeling**: Leveraging Scikit-learn and XGBoost for model development and evaluation, with Optuna for optimization to boost performance.")}
+    - {trans("**Web Development**: Learning Streamlit to build the web application.")}
+    - {trans("**Version Control**: Utilizing GitHub for tracking changes and deploying the app online.")}
 
-    These skills enabled me to transform raw data into a functional and insightful tool.
+    {trans("These skills enabled me to transform raw data into a functional and insightful tool.")}
 
-    ## Challenges
-    The project presented several obstacles, including:
+    ## {trans("Challenges")}
+    {trans("The project presented several obstacles, including:")}
 
-    - **Hardware Limitations**: Downloading and processing a large dataset on a low-performance computer, which significantly delayed model training and optimization.
-    - **Translation**: Translating the entire web app into English and Lithuanian, a straightforward but time-intensive task.
-    - **Ideation**: Brainstorming ideas for graphs and statistics that would be both relevant and useful to users.
+    - {trans("**Hardware Limitations**: Downloading and processing a large dataset on a low-performance computer, which significantly delayed model training and optimization.")}
+    - {trans("**Translation**: Translating the entire web app into English and Lithuanian, a straightforward but time-intensive task.")}
+    - {trans("**Ideation**: Brainstorming ideas for graphs and statistics that would be both relevant and useful to users.")}
 
-    Overcoming these hurdles required persistence and creative problem-solving.
+    {trans("Overcoming these hurdles required persistence and creative problem-solving.")}
 
-    ## Improvements
-    While I achieved most of my initial objectives, there’s room for enhancement:
+    ## {trans("Improvements")}
+    {trans("While I achieved most of my initial objectives, there’s room for enhancement:")}
 
-    - **Data Updates**: An issue with the source website prevented me from obtaining a complete 2024 dataset, leaving some graphs without this year’s data due to its incompleteness.
-    - **Performance**: The web app could be smoother, with techniques like caching offering potential optimization.
+    - {trans("**Data Updates**: An issue with the source website prevented me from obtaining a complete 2024 dataset, leaving some graphs without this year’s data due to its incompleteness.")}
+    - {trans("**Performance**: The web app could be smoother, with techniques like caching offering potential optimization.")}
 
-    These areas provide opportunities for future refinement as I continue to develop the project.
+    {trans("These areas provide opportunities for future refinement as I continue to develop the project.")}
         """)
 with tab1:
     st.markdown(
