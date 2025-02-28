@@ -45,7 +45,7 @@ lt_mappings = {
     "## Average Heat Consumption / m² by buildings build year": "## Vidutinis Šilumos suvartojimas / m² pagal pastato statybos metus",
     "Over time we can see that heat consumption decreases as buildings get younger, which can be attributed to better construction and insulation technology. Specifically buildings built after 1940 and then 2000 have lower consumption heat consumption on average": "Laikui bėgant, matome, kad šilumos suvartojimas mažėja, kai pastatai tampa naujesni, o tai galima priskirti geresnei statybos ir izoliacijos technologijai. Konkrečiai, pastatai, pastatyti po 1940 m. ir tada po 2000 m., vidutiniškai turi mažesnį šilumos suvartojimą.",
     "# Oldest building was built in -- 1849": "# Seniausias pastatas buvo pastatytas -- 1849 m.",
-    "# Most frequent build year -- 1970 (1924 buildings)": "# Dažniausiai pasidorantys statybos metai -- 1970 m. (1924 Pastatų)",
+    "# Most frequent build year -- 1970 (1924 buildings)": "# Dažniausiai pasirodantys statybos metai -- 1970 m. (1924 Pastatų)",
     "## Geospatial building age heatmap": "## Geografinis pastatų amžiaus šiluminis žemėlapis",
     "# Median amount of floors per building -- 5 Floors": "# Vidutinis aukštų skaičius pastate -- 5 aukštai (Mediana)",
     "# Highest building -- 15 floors": "# Aukščiausias pastatas -- 15 aukštų",
@@ -130,7 +130,9 @@ lt_mappings = {
     "While I achieved most of my initial objectives, there’s room for enhancement:": "Nors pasiekiau daugumą savo pradinių tikslų, yra kur tobulėti:",
     "**Data Updates**: An issue with the source website prevented me from obtaining a complete 2024 dataset, leaving some graphs without this year’s data due to its incompleteness.": "**Duomenų atnaujinimai**: Problema su šaltinio svetaine neleido man gauti pilno 2024 metų duomenų rinkinio, todėl kai kurie grafikai neturi šių metų duomenų dėl jų neišsamumo.",
     "**Performance**: The web app could be smoother, with techniques like caching offering potential optimization.": "**Veikimas**: Internetinė programėlė galėtų veikti sklandžiau, pasitelkiant kelis programavimo būdus",
-    "These areas provide opportunities for future refinement as I continue to develop the project.": "Šie trūkumai suteikia galimybių patobulinti puslapį ateityje, toliau vystant projektą" 
+    "These areas provide opportunities for future refinement as I continue to develop the project.": "Šie trūkumai suteikia galimybių patobulinti puslapį ateityje, toliau vystant projektą",
+    "Introduction": "Įvadas",
+    "Intro": "Įvadas" 
 }
 
 # Translation function with fallback
@@ -181,7 +183,7 @@ st.markdown(
 
 # Define tabs
 intro, tab1, tab2, tab3, tab4 = st.tabs([
-    "Intro",
+    trans("Intro"),
     trans("Overall Consumption Trends"),
     trans("Trends By Building Function"),
     trans("Rooms Data"),
@@ -190,7 +192,7 @@ intro, tab1, tab2, tab3, tab4 = st.tabs([
 
 # Intro tab
 with intro:
-    st.header("Introduction")
+    st.header(trans("Introduction"))
     st.markdown(f"""
     ## {trans('About')}
     {trans('This web app serves as a data analytics and data science project, exploring energy consumption data in Šiauliai, Lithuania. The data, collected by AB \'Šiaulių Energija\', is publicly available on [data.gov.lt](https://data.gov.lt/datasets/2886/). The app features various graphs, heatmaps, and statistics designed to deliver valuable insights for stakeholders. It also includes an advanced AI tool that estimates energy consumption for rooms, offering practical real-world applications. The project is open-source and available on [GitHub](https://github.com/ZygimantasM/siauliu_energija_data_analysis).')}
