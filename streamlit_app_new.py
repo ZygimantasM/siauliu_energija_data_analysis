@@ -412,7 +412,7 @@ with tab2:
     res_lt = opt_csv[res_side]
     df_melted = res_lt.melt(id_vars=["year"], var_name="Category", value_name="Value")
     chart = alt.Chart(df_melted).mark_bar().encode(
-        x=alt.X("year:O", title="Year", scale=alt.Scale(zero=False)),
+        x=alt.X(f"year:O", title=f"{trans("Year")}", scale=alt.Scale(zero=False)),
         y=alt.Y("sum(Value):Q", title=res_side, scale=alt.Scale(zero=False)),
         color="Category:N",
         order=alt.Order("Value", sort="descending")
