@@ -72,8 +72,8 @@ lt_mappings = {
     "Red color means higher buildings with more floors, blue are lower buildings with less floors": "Raudona spalva reiškia aukštesnius pastatus su daugiau aukštų, mėlyna - žemesnius pastatus su mažiau aukštų.",
     "AI Energy consumption estimation tool": "DI Energijos suvartojimo įrankis",
     "How to use the tool?": "Kaip nauduotis šį įrankį?",
-    "Use the displayed sliders and input boxes to select the various metrics of the room, which helps the AI model give an accurate prediction. In order to select the coordinates of where the room is located, simply click on the map on the location of the relevant building, the map can be dragged around and zoomed in/out. The month of the year field specifies for which month of the year to predict energy consumption. If the number `6` is supplied, the energy consumption will be calculated for the month of june. Lastly, in order to get an estimation simply click the button below that says `Predict Energy Consumption`. After waiting a second for the model to finish calculations, a field should appear below the button, with the predictions for heat and hot water consumed for that month. More information about the AI model is at the bottom of the page": "Naudokite rodiklius rodančius slankiklius ir įvesties laukelius, kad pasirinktumėte įvairius kambario parametrus, kas padės AI modeliui pateikti tikslią prognozę. Norėdami pasirinkti koordinates, kur yra kambarys, tiesiog spustelėkite žemėlapį atitinkamo pastato vietoje, žemėlapį galima vilkti ir priartinti/tolinti. Metų mėnesio laukas nurodo, kuriam mėnesiui prognozuoti energijos suvartojimą. Jei įvedamas skaičius `6`, energijos suvartojimas bus apskaičiuotas birželio mėnesiui. Galiausiai, norėdami gauti apskaičiavimą, tiesiog spustelėkite žemiau esantį mygtuką, kuris sako `Prognozuoti energijos suvartojimą`. Palaukus sekundę, kol modelis baigs skaičiavimus, po mygtuku turėtų atsirasti laukas su šilumos ir karšto vandens suvartojimo prognozėmis tam mėnesiui. Daugiau informacijos apie DI modelį yra puslapio apačioje.",
-    "<strong>Note:</strong> The AI predicts heat consumption in kWh with an average error of about 100 kWh, based on historical data. Results may vary depending on real-world conditions. The average error for hot water consumption is ~1 m³.": "<strong>Pastaba:</strong> DI prognozuoja šilumos suvartojimą kWh su vidutine klaida apie 100 kWh, remiantis istoriniais duomenimis. Rezultatai gali skirtis priklausomai nuo realių sąlygų. Vidutinė klaida karšto vandens suvartojimui yra apie 1 m³.",
+    "Use the displayed sliders and input boxes to select the various metrics of the room, which helps the AI model give an accurate prediction. In order to select the coordinates of where the room is located, simply click on the map on the location of the relevant building, the map can be dragged around and zoomed in/out. The month of the year field specifies for which month of the year to predict energy consumption. If the number `6` is supplied, the energy consumption will be calculated for the month of june. Lastly, in order to get an estimation simply click the button below that says `Predict Energy Consumption`. After waiting a second for the model to finish calculations, a field should appear below the button, with the predictions for heat consumed for that month. More information about the AI model is at the bottom of the page": "Naudokite rodiklius rodančius slankiklius ir įvesties laukelius, kad pasirinktumėte įvairius kambario parametrus, kas padės AI modeliui pateikti tikslią prognozę. Norėdami pasirinkti koordinates, kur yra kambarys, tiesiog spustelėkite žemėlapį atitinkamo pastato vietoje, žemėlapį galima vilkti ir priartinti/tolinti. Metų mėnesio laukas nurodo, kuriam mėnesiui prognozuoti energijos suvartojimą. Jei įvedamas skaičius `6`, energijos suvartojimas bus apskaičiuotas birželio mėnesiui. Galiausiai, norėdami gauti apskaičiavimą, tiesiog spustelėkite žemiau esantį mygtuką, kuris sako `Prognozuoti energijos suvartojimą`. Palaukus sekundę, kol modelis baigs skaičiavimus, po mygtuku turėtų atsirasti laukas su šilumos suvartojimo prognozėmis tam mėnesiui. Daugiau informacijos apie DI modelį yra puslapio apačioje.",
+    "<strong>Note:</strong> The AI predicts heat consumption in kWh with an average error of about 100 kWh, based on historical data. Results may vary depending on real-world conditions.": "<strong>Pastaba:</strong> DI prognozuoja šilumos suvartojimą kWh su vidutine klaida apie 100 kWh, remiantis istoriniais duomenimis. Rezultatai gali skirtis priklausomai nuo realių sąlygų.",
     "Please enter the required information": "Prašome įvesti reikiamą informaciją",
     "Number of floors in the building": "Aukštų skaičius pastate",
     "Room area, m²": "Kambario plotas, m²",
@@ -98,8 +98,8 @@ lt_mappings = {
     "Below is a sample from the test set used to evaluate the model. It compares actual values from the dataset with the AI’s predictions, showcasing impressive results, especially for heat consumption. In some cases, the model is off by 300 kWh or 50 kWh, while in others, it’s spot-on with a difference of 0 kWh. The Actual column reflects the real values the AI aims to match, the Preds column displays the AI’s predictions, and the Diff column indicates the difference between them, revealing the model’s error in units.": "Žemiau pateiktas pavyzdys iš testo rinkinio, kuris buvo naudojamas modelio vertinimui. Jis lygina faktines reikšmes iš duomenų rinkinio su DI prognozėmi. Iš šio pavyzdžio matosi įspūdingi rezultatai, ypač šilumos suvartojimo atveju. Kai kuriais atvejais modelis klaidingai nukrypsta 300 kWh arba tik 50 kWh, o kitais atvejais jis visiškai tiksliai progrnozuoja su beveik 0 kWh nuokrypa. Stulpelis „Actual“ atspindi realias reikšmes, kurias DI siekia atspėti, stulpelis „Preds“ rodo DI prognozes, o stulpelis „Diff“ rodo skirtumą tarp prognozės ir tiesos, parodantis kiek nuklydo modelis vienetais",
     "Socials": "Socialiniai tinklai",
     "What does this tool do?": "Ką šis įrankis daro?",
-    """Armed with specific data and metrics about a room, this sophisticated AI tool can precisely forecast the monthly consumption of heat and hot water for that space. Applications include: efficient energy management in residential and commercial buildings, optimizing heating schedules to reduce costs and environmental impact, assisting in the design of energy-efficient homes and buildings""": """
-    Turėdamas konkrečius duomenis ir matavimus patalpos, šis išmanusis DI įrankis gali tiksliai prognozuoti mėnesinį šilumos ir karšto vandens suvartojimą toje erdvėje. Naudojimo sritys: efektyvus energijos valdymas gyvenamuosiuose ir komerciniuose pastatuose, šildymo grafikų optimizavimas siekiant sumažinti išlaidas ir poveikį aplinkai, pagalba projektuojant energiją taupančius namus ir pastatus
+    """Armed with specific data and metrics about a room, this sophisticated AI tool can precisely forecast the monthly consumption of heat for that space. Applications include: efficient energy management in residential and commercial buildings, optimizing heating schedules to reduce costs and environmental impact, assisting in the design of energy-efficient homes and buildings""": """
+    Turėdamas konkrečius duomenis ir matavimus patalpos, šis išmanusis DI įrankis gali tiksliai prognozuoti mėnesinį šilumos suvartojimą toje erdvėje. Naudojimo sritys: efektyvus energijos valdymas gyvenamuosiuose ir komerciniuose pastatuose, šildymo grafikų optimizavimas siekiant sumažinti išlaidas ir poveikį aplinkai, pagalba projektuojant energiją taupančius namus ir pastatus
     """,
     "About": "Apie",
     "Quick How-to": "Kaip naudotis puslapiu?",
@@ -133,6 +133,25 @@ lt_mappings = {
     "These areas provide opportunities for future refinement as I continue to develop the project.": "Šie trūkumai suteikia galimybių patobulinti puslapį ateityje, toliau vystant projektą",
     "Introduction": "Įvadas",
     "Intro": "Įvadas" 
+}
+
+building_func_translations = {
+    "Transporto": "Transportation",
+    "Maitinimo": "Catering",
+    "Gyvenamasis (individualus pastatas)": "Residential (individual building)",
+    "Gydymo": "Medical",
+    "Religinės": "Religious",
+    "Kita": "Other",
+    "Administracinė": "Administrative",
+    "Kultūros": "Cultural",
+    "Gamybos": "Industrial",
+    "Gyvenamasis (trijų ir daugiau butų - daugiaaukštis pastatas)": "Residential (three or more apartments - multi-story building)",
+    "Prekybos": "Commercial",
+    "Sporto": "Sports",
+    "Komercinės paskirties": "Commercial purpose",
+    "Mokslo": "Educational",
+    "Viešbučių": "Hotels",
+    "Sandėliavimo": "Warehousing"
 }
 
 # Translation function with fallback
@@ -385,20 +404,34 @@ with tab2:
         )
         rooms = pd.read_csv("csv_files/rooms.csv")
         func_val_counts = rooms["building_func"].value_counts()
+        # Translate the index based on language
+        if lang == "English":
+            func_val_counts.index = func_val_counts.index.map(building_func_translations)
+            func_val_counts.name = "Count"  # Explicitly set to "Count" in English
+        else:
+            func_val_counts.index = func_val_counts.index  # No change needed for Lithuanian index
+            func_val_counts.name = "Skaičius"  # Set to "Skaičius" in Lithuanian
         st.table(func_val_counts)
 
     with col6:
-        st.markdown(
-            f"<h3 style='text-align: center;'>{trans('Average Monthly Heat Consumption / m² by Function')}</h3>",
-            unsafe_allow_html=True
-        )
-        func_df = pd.read_csv("csv_files/func_df.csv")
-        bar_chart = alt.Chart(func_df).mark_bar().encode(
-            y=alt.Y("building_func:N", sort="-x", title=trans("Building Function")),
-            x=alt.X("eff:Q", title="kWh / m²"),
-            color=alt.value("#fcaa01")
-        ).properties(height=600)
-        st.altair_chart(bar_chart, use_container_width=True)
+        with col6:
+            st.markdown(
+                f"<h3 style='text-align: center;'>{trans('Average Monthly Heat Consumption / m² by Function')}</h3>",
+                unsafe_allow_html=True
+            )
+            func_df = pd.read_csv("csv_files/func_df.csv")
+            # Add translated column based on language
+            if lang == "English":
+                func_df["building_func_trans"] = func_df["building_func"].map(building_func_translations)
+            else:
+                func_df["building_func_trans"] = func_df["building_func"]
+            # Update the chart to use the translated column
+            bar_chart = alt.Chart(func_df).mark_bar().encode(
+                y=alt.Y("building_func_trans:N", sort="-x", title=trans("Building Function")),
+                x=alt.X("eff:Q", title="kWh / m²"),
+                color=alt.value("#fcaa01")
+            ).properties(height=600)
+            st.altair_chart(bar_chart, use_container_width=True)
 
     st.write(trans("### Yearly Consumption trend by building function"))
     heat_cons_by_func = pd.read_csv("csv_files/heat_cons_by_func.csv")
@@ -410,13 +443,19 @@ with tab2:
         "Karštas vanduo, m³": wat_cons_by_func
     }
     res_lt = opt_csv[res_side]
-    df_melted = res_lt.melt(id_vars=["year"], var_name="Category", value_name="Value")
+    # Create a translated DataFrame based on language
+    if lang == "English":
+        res_lt_trans = res_lt.rename(columns=building_func_translations)
+    else:
+        res_lt_trans = res_lt.copy()
+    # Melt the translated DataFrame
+    df_melted = res_lt_trans.melt(id_vars=["year"], var_name="Category", value_name="Value")
     chart = alt.Chart(df_melted).mark_bar().encode(
-        x=alt.X(f"year:O", title=f"{trans("Year")}", scale=alt.Scale(zero=False)),
+        x=alt.X(f"year:O", title=f"{trans('Year')}", scale=alt.Scale(zero=False)),
         y=alt.Y("sum(Value):Q", title=res_side, scale=alt.Scale(zero=False)),
-        color="Category:N",
+        color=alt.Color("Category:N", scale=alt.Scale(scheme="category20")),  # Add custom color scheme
         order=alt.Order("Value", sort="descending")
-    ).properties(width=600, height=400).interactive()
+    ).properties(width=600, height=800).interactive()
     st.altair_chart(chart, use_container_width=True)
 
 # Tab 3: Rooms Data
@@ -571,15 +610,15 @@ with tab4:
 
     st.title(trans("AI Consumption Estimation Tool"))
     st.markdown(f"### {trans('What does this tool do?')}")
-    st.markdown(trans("""Armed with specific data and metrics about a room, this sophisticated AI tool can precisely forecast the monthly consumption of heat and hot water for that space. Applications include: efficient energy management in residential and commercial buildings, optimizing heating schedules to reduce costs and environmental impact, assisting in the design of energy-efficient homes and buildings"""))
+    st.markdown(trans("""Armed with specific data and metrics about a room, this sophisticated AI tool can precisely forecast the monthly consumption of heat for that space. Applications include: efficient energy management in residential and commercial buildings, optimizing heating schedules to reduce costs and environmental impact, assisting in the design of energy-efficient homes and buildings"""))
 
     st.markdown(f"### {trans('How to use the tool?')}")
-    st.markdown(trans("Use the displayed sliders and input boxes to select the various metrics of the room, which helps the AI model give an accurate prediction. In order to select the coordinates of where the room is located, simply click on the map on the location of the relevant building, the map can be dragged around and zoomed in/out. The month of the year field specifies for which month of the year to predict energy consumption. If the number `6` is supplied, the energy consumption will be calculated for the month of june. Lastly, in order to get an estimation simply click the button below that says `Predict Energy Consumption`. After waiting a second for the model to finish calculations, a field should appear below the button, with the predictions for heat and hot water consumed for that month. More information about the AI model is at the bottom of the page"))
+    st.markdown(trans("Use the displayed sliders and input boxes to select the various metrics of the room, which helps the AI model give an accurate prediction. In order to select the coordinates of where the room is located, simply click on the map on the location of the relevant building, the map can be dragged around and zoomed in/out. The month of the year field specifies for which month of the year to predict energy consumption. If the number `6` is supplied, the energy consumption will be calculated for the month of june. Lastly, in order to get an estimation simply click the button below that says `Predict Energy Consumption`. After waiting a second for the model to finish calculations, a field should appear below the button, with the predictions for heat consumed for that month. More information about the AI model is at the bottom of the page"))
 
     st.markdown(
         f"""
         <div style='background-color: #fff3cd; padding: 10px; border-radius: 5px; border: 1px solid #ffeeba; color: #856404;'>
-            {trans('<strong>Note:</strong> The AI predicts heat consumption in kWh with an average error of about 100 kWh, based on historical data. Results may vary depending on real-world conditions. The average error for hot water consumption is ~1 m³.')}
+            {trans('<strong>Note:</strong> The AI predicts heat consumption in kWh with an average error of about 100 kWh, based on historical data. Results may vary depending on real-world conditions.')}
         </div>
         """,
         unsafe_allow_html=True
@@ -619,15 +658,28 @@ with tab4:
             max_value=12,
             step=1
         )
-        features["building_func"] = st.selectbox(
+        building_func_options_lt = [
+        "Transporto", "Maitinimo", "Gyvenamasis (individualus pastatas)", "Gydymo",
+        "Religinės", "Kita", "Administracinė", "Kultūros", "Gamybos",
+        "Gyvenamasis (trijų ir daugiau butų - daugiaaukštis pastatas)", "Prekybos",
+        "Sporto", "Komercinės paskirties", "Mokslo", "Viešbučių", "Sandėliavimo"
+        ]
+        # Display options based on language
+        if lang == "English":
+            building_func_options_display = [building_func_translations.get(func, func) for func in building_func_options_lt]
+        else:
+            building_func_options_display = building_func_options_lt
+        selected_display = st.selectbox(
             trans("Building function"),
-            [
-                "Transporto", "Maitinimo", "Gyvenamasis (individualus pastatas)", "Gydymo",
-                "Religinės", "Kita", "Administracinė", "Kultūros", "Gamybos",
-                "Gyvenamasis (trijų ir daugiau butų - daugiaaukštis pastatas)", "Prekybos",
-                "Sporto", "Komercinės paskirties", "Mokslo", "Viešbučių", "Sandėliavimo"
-            ]
+            building_func_options_display
         )
+        # Map back to Lithuanian for model input
+        if lang == "English":
+            features["building_func"] = next(
+                key for key, value in building_func_translations.items() if value == selected_display
+            )
+        else:
+            features["building_func"] = selected_display
 
     with col3:
         from pyproj import Transformer
@@ -661,25 +713,18 @@ with tab4:
 
     if st.button(trans("Predict Energy Consumption")):
         preds_heat = get_prediction([features.values()])
-        preds_wat = get_prediction([features.values()], "other_files/xgb_wat_v1.sav", "other_files/column_transformer_wat.pkl")
         st.markdown(
             f"""
             <div style='background-color: #f8f9fa; padding: 20px; border-radius: 10px; margin-top: 20px;'>
                 <h3 style='color: #2c3e50;'>{trans('Prediction Results')}</h3>
-                <div style='display: flex; justify-content: space-between;'>
-                    <div style='background-color: #e8f5e9; padding: 15px; border-radius: 8px; width: 48%;'>
-                        <h4 style='color: #2ecc71; margin: 0;'>{trans('Heat Consumption')}</h4>
-                        <p style='font-size: 24px; color: #2ecc71; margin: 5px 0 0 0;'>{float(preds_heat):.2f} kWh / {trans('month')}</p>
-                    </div>
-                    <div style='background-color: #e3f2fd; padding: 15px; border-radius: 8px; width: 48%;'>
-                        <h4 style='color: #3498db; margin: 0;'>{trans('Hot Water Consumption')}</h4>
-                        <p style='font-size: 24px; color: #3498db; margin: 5px 0 0 0;'>{float(preds_wat):.2f} m³ / {trans('month')}</p>
-                    </div>
+                <div style='background-color: #e8f5e9; padding: 15px; border-radius: 8px; width: 100%;'>
+                    <h4 style='color: #2ecc71; margin: 0;'>{trans('Heat Consumption')}</h4>
+                    <p style='font-size: 24px; color: #2ecc71; margin: 5px 0 0 0;'>{float(preds_heat):.2f} kWh / {trans('month')}</p>
                 </div>
             </div>
             """,
             unsafe_allow_html=True
-        )
+            )
 
     st.markdown(f"### {trans('Technical description of the AI model')}")
     st.markdown(f"""
