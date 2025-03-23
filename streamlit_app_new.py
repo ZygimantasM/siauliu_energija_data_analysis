@@ -19,6 +19,7 @@ sidebar.header("Settings / Nustatymai")
 # Language selection
 lang = sidebar.selectbox("Language / Kalba", ("English", "Lietuvių"), key=47)
 
+
 # Lithuanian translations dictionary
 lt_mappings = {
     "Data Analysis of AB \"Šiaulių Energija\"": "Duomenų Analizė AB \"Šiaulių Energija\"",
@@ -260,6 +261,37 @@ with intro:
 
 # Tab 1: Overall Consumption Trends
 with tab1:
+
+    @st.cache_data
+    def load_monthly_trend():
+        df = pd.read_csv("csv_files/monthly_trend.csv")
+        df["Date"] = pd.to_datetime(df["month"])
+        return df
+
+    @st.cache_data
+    def load_yearly_trend():
+        return pd.read_csv("csv_files/yearly_trend.csv")
+
+    @st.cache_data
+    def load_contract_trend():
+        df = pd.read_csv("csv_files/contract_trend.csv")
+        df["month"] = pd.to_datetime(df["month"])
+        return df
+
+    @st.cache_data
+    def load_contract_trend_yearly():
+        return pd.read_csv("csv_files/contract_trend_yearly.csv")
+
+    @st.cache_data
+    def load_geo_amount(res_side):
+        opt_csv = {
+            "Heat, kWh": "csv_files/geo_amount_heat.csv",
+            "Hot water, m³": "csv_files/geo_amount_wat.csv",
+            "Šiluma, kWh": "csv_files/geo_amount_heat.csv",
+            "Karštas vanduo, m³": "csv_files/geo_amount_wat.csv"
+        }
+        return pd.read_csv(opt_csv[res_side])
+
     st.markdown(
         f"<h1 style='text-align: center;'>{trans('Energy Consumption Trends')}</h1>",
         unsafe_allow_html=True
@@ -271,7 +303,7 @@ with tab1:
             f"<h3 style='text-align: center;'>{trans('Monthly')}</h3>",
             unsafe_allow_html=True
         )
-        monthly_trend = pd.read_csv("csv_files/monthly_trend.csv")
+        monthly_trend = load_monthly_trend()
         monthly_trend["Date"] = pd.to_datetime(monthly_trend["month"])
         opt = {
             "Heat, kWh": "Šiluma",
@@ -294,7 +326,7 @@ with tab1:
             f"<h3 style='text-align: center;'>{trans('Yearly')}</h3>",
             unsafe_allow_html=True
         )
-        yearly_trend = pd.read_csv("csv_files/yearly_trend.csv")
+        yearly_trend = load_yearly_trend()
         res_lt = opt[res_side]
         st.bar_chart(
             yearly_trend,
@@ -316,7 +348,7 @@ with tab1:
             f"<h3 style='text-align: center;'>{trans('Monthly')}</h3>",
             unsafe_allow_html=True
         )
-        contract_trend = pd.read_csv("csv_files/contract_trend.csv")
+        contract_trend = load_contract_trend()
         contract_trend["month"] = pd.to_datetime(contract_trend["month"])
         st.line_chart(
             contract_trend,
@@ -332,7 +364,7 @@ with tab1:
             f"<h3 style='text-align: center;'>{trans('Yearly')}</h3>",
             unsafe_allow_html=True
         )
-        contract_trend_yearly = pd.read_csv("csv_files/contract_trend_yearly.csv")
+        contract_trend_yearly = load_contract_trend_yearly()
         st.bar_chart(
             contract_trend_yearly,
             x="year",
@@ -369,7 +401,7 @@ with tab1:
     st.write(trans("Red color - Higher consumption area, Yellow - Lower consumption area"))
     res_date = st.select_slider(" ", options=date_range, value=datetime(2019, 1, 1))
     res_date = str(res_date.date())
-    geo_amount = pd.read_csv(res_csv)
+    geo_amount = load_geo_amount(res_side)
     geo_amount_filtered = geo_amount[geo_amount["month"] == res_date]
     st.pydeck_chart(
         pdk.Deck(
@@ -396,13 +428,27 @@ with tab1:
 
 # Tab 2: Trends By Building Function
 with tab2:
+    @st.cache_data
+    def load_rooms():
+        return pd.read_csv("csv_files/rooms.csv")
+
+    @st.cache_data
+    def load_func_df():
+        return pd.read_csv("csv_files/func_df.csv")
+
+    @st.cache_data
+    def load_cons_by_func(res_side):
+        if res_side in ["Heat, kWh", "Šiluma, kWh"]:
+            return pd.read_csv("csv_files/heat_cons_by_func.csv")
+        else:
+            return pd.read_csv("csv_files/wat_cons_by_func.csv")
     col5, col6 = st.columns(2)
     with col5:
         st.markdown(
             f"<h3 style='text-align: center;'>{trans('Number of Rooms by Building Function')}</h3>",
             unsafe_allow_html=True
         )
-        rooms = pd.read_csv("csv_files/rooms.csv")
+        rooms = load_rooms()
         func_val_counts = rooms["building_func"].value_counts()
         # Translate the index based on language
         if lang == "English":
@@ -419,7 +465,7 @@ with tab2:
                 f"<h3 style='text-align: center;'>{trans('Average Monthly Heat Consumption / m² by Function')}</h3>",
                 unsafe_allow_html=True
             )
-            func_df = pd.read_csv("csv_files/func_df.csv")
+            func_df = load_func_df()
             # Add translated column based on language
             if lang == "English":
                 func_df["building_func_trans"] = func_df["building_func"].map(building_func_translations)
@@ -434,15 +480,7 @@ with tab2:
             st.altair_chart(bar_chart, use_container_width=True)
 
     st.write(trans("### Yearly Consumption trend by building function"))
-    heat_cons_by_func = pd.read_csv("csv_files/heat_cons_by_func.csv")
-    wat_cons_by_func = pd.read_csv("csv_files/wat_cons_by_func.csv")
-    opt_csv = {
-        "Heat, kWh": heat_cons_by_func,
-        "Hot water, m³": wat_cons_by_func,
-        "Šiluma, kWh": heat_cons_by_func,
-        "Karštas vanduo, m³": wat_cons_by_func
-    }
-    res_lt = opt_csv[res_side]
+    res_lt = load_cons_by_func(res_side)  # Use cached function
     # Create a translated DataFrame based on language
     if lang == "English":
         res_lt_trans = res_lt.rename(columns=building_func_translations)
@@ -460,6 +498,26 @@ with tab2:
 
 # Tab 3: Rooms Data
 with tab3:
+    @st.cache_data
+    def load_area_df():
+        return pd.read_csv("csv_files/area_df.csv")
+
+    @st.cache_data
+    def load_buyer_rooms():
+        return pd.read_csv("csv_files/buyer_rooms.csv")
+
+    @st.cache_data
+    def load_heat_by_build_year():
+        return pd.read_csv("csv_files/heat_by_build_year.csv")
+
+    @st.cache_data
+    def load_geo_build():
+        df = pd.read_csv("csv_files/geo_build.csv")
+        return df[df["build_year"] > 1900]  # Pre-filter to cache the result
+
+    @st.cache_data
+    def load_geo_floors():
+        return pd.read_csv("csv_files/geo_floors.csv")
     col7, col8 = st.columns(2)
     with col7:
         st.markdown(
@@ -470,7 +528,7 @@ with tab3:
             "<h1 style='font-size: 72px; text-align: center;'>44900</h1>",
             unsafe_allow_html=True
         )
-        area_df = pd.read_csv("csv_files/area_df.csv")
+        area_df = load_area_df()
         st.header(trans("Average Heat Consumption / m² against Room Area"))
         chart = alt.Chart(area_df).mark_bar().encode(
             x=alt.X("area_bins:N", sort="-y", title=trans("Room Area, m²")),
@@ -508,7 +566,7 @@ with tab3:
     st.write(trans("From the graph above we can see that as the room area increases the average heat consumption per square meter actually decreases, meaning it is more efficient to provide heating for larger rooms rather than smaller ones."))
     st.write(trans("## Number of Rooms per buyer, Top 20 buyers"))
     st.write(trans("From this bar chart, we can see that a few buyers possess hundreds of rooms, but we can’t identify who they are because the data about the buyers in the dataset is anonymized."))
-    buyer_rooms = pd.read_csv("csv_files/buyer_rooms.csv")
+    buyer_rooms = load_buyer_rooms()
     st.bar_chart(
         buyer_rooms["room_id"],
         x_label=trans("Individual buyers"),
@@ -518,7 +576,7 @@ with tab3:
 
     st.write(trans("## Average Heat Consumption / m² by buildings build year"))
     st.write(trans("Over time we can see that heat consumption decreases as buildings get younger, which can be attributed to better construction and insulation technology. Specifically buildings built after 1940 and then 2000 have lower consumption heat consumption on average"))
-    heat_by_build_year = pd.read_csv("csv_files/heat_by_build_year.csv")
+    heat_by_build_year = load_heat_by_build_year()
     st.bar_chart(
         heat_by_build_year,
         x="build_year",
@@ -532,7 +590,7 @@ with tab3:
     st.write(trans("# Most frequent build year -- 1970 (1924 buildings)"))
     st.write(trans("## Geospatial building age heatmap"))
     st.write(trans("Green color means newer buildings, blue is older buildings"))
-    geo_build = pd.read_csv("csv_files/geo_build.csv")
+    geo_build = load_geo_build()
     geo_build = geo_build[geo_build["build_year"] > 1900]
     st.pydeck_chart(
         pdk.Deck(
@@ -567,7 +625,7 @@ with tab3:
     st.write(trans("# Highest building -- 15 floors"))
     st.write(trans("## Geospatial building floors heatmap"))
     st.write(trans("Red color means higher buildings with more floors, blue are lower buildings with less floors"))
-    geo_floors = pd.read_csv("csv_files/geo_floors.csv")
+    geo_floors = load_geo_floors()
     st.pydeck_chart(
         pdk.Deck(
             map_style=None,
