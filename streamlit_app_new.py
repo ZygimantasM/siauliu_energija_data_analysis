@@ -7,7 +7,11 @@ import folium
 from streamlit_folium import st_folium
 from helper_funcs import get_prediction
 
-
+# Initialize session state for coordinates with default values
+if "x_coord" not in st.session_state:
+    st.session_state.x_coord = 456969.719985  # Default X coordinate
+if "y_coord" not in st.session_state:
+    st.session_state.y_coord = 6199673.340395  # Default Y coordinate
 
 # Set page configuration
 st.set_page_config(layout="wide")
@@ -72,7 +76,7 @@ lt_mappings = {
     "Green color means newer buildings, blue is older buildings": "Žalia spalva reiškia naujesnius pastatus, mėlyna - senesnius pastatus.",
     "Red color means higher buildings with more floors, blue are lower buildings with less floors": "Raudona spalva reiškia aukštesnius pastatus su daugiau aukštų, mėlyna - žemesnius pastatus su mažiau aukštų.",
     "AI Energy consumption estimation tool": "DI Energijos suvartojimo įrankis",
-    "How to use the tool?": "Kaip nauduotis šį įrankį?",
+    "How to use the tool?": "Kaip nauduoti šį įrankį?",
     "Use the displayed sliders and input boxes to select the various metrics of the room, which helps the AI model give an accurate prediction. In order to select the coordinates of where the room is located, simply click on the map on the location of the relevant building, the map can be dragged around and zoomed in/out. The month of the year field specifies for which month of the year to predict energy consumption. If the number `6` is supplied, the energy consumption will be calculated for the month of june. Lastly, in order to get an estimation simply click the button below that says `Predict Energy Consumption`. After waiting a second for the model to finish calculations, a field should appear below the button, with the predictions for heat consumed for that month. More information about the AI model is at the bottom of the page": "Naudokite rodiklius rodančius slankiklius ir įvesties laukelius, kad pasirinktumėte įvairius kambario parametrus, kas padės AI modeliui pateikti tikslią prognozę. Norėdami pasirinkti koordinates, kur yra kambarys, tiesiog spustelėkite žemėlapį atitinkamo pastato vietoje, žemėlapį galima vilkti ir priartinti/tolinti. Metų mėnesio laukas nurodo, kuriam mėnesiui prognozuoti energijos suvartojimą. Jei įvedamas skaičius `6`, energijos suvartojimas bus apskaičiuotas birželio mėnesiui. Galiausiai, norėdami gauti apskaičiavimą, tiesiog spustelėkite žemiau esantį mygtuką, kuris sako `Prognozuoti energijos suvartojimą`. Palaukus sekundę, kol modelis baigs skaičiavimus, po mygtuku turėtų atsirasti laukas su šilumos suvartojimo prognozėmis tam mėnesiui. Daugiau informacijos apie DI modelį yra puslapio apačioje.",
     "<strong>Note:</strong> The AI predicts heat consumption in kWh with an average error of about 100 kWh, based on historical data. Results may vary depending on real-world conditions.": "<strong>Pastaba:</strong> DI prognozuoja šilumos suvartojimą kWh su vidutine klaida apie 100 kWh, remiantis istoriniais duomenimis. Rezultatai gali skirtis priklausomai nuo realių sąlygų.",
     "Please enter the required information": "Prašome įvesti reikiamą informaciją",
@@ -651,27 +655,17 @@ with tab3:
     )
 
 # Tab 4: AI Consumption Estimation Tool
+# Tab 4: AI Consumption Estimation Tool
 with tab4:
-    # Initialize session state features
-    if "features" not in st.session_state:
-        st.session_state.features = {
-            "legal_entity": False,
-            "month": 1,
-            "room_area": 50.0,
-            "build_year": 1971,
-            "building_floors": 5,
-            "building_func": "Gyvenamasis (trijų ir daugiau butų - daugiaaukštis pastatas)",
-            "x_coord": 456969.719985,
-            "y_coord": 6199673.340395
-        }
-    features = st.session_state.features
+    from pyproj import Transformer
+    transformer = Transformer.from_crs("epsg:4326", "epsg:3346", always_xy=True)
 
     st.title(trans("AI Consumption Estimation Tool"))
     st.markdown(f"### {trans('What does this tool do?')}")
     st.markdown(trans("""Armed with specific data and metrics about a room, this sophisticated AI tool can precisely forecast the monthly consumption of heat for that space. Applications include: efficient energy management in residential and commercial buildings, optimizing heating schedules to reduce costs and environmental impact, assisting in the design of energy-efficient homes and buildings"""))
 
     st.markdown(f"### {trans('How to use the tool?')}")
-    st.markdown(trans("Use the displayed sliders and input boxes to select the various metrics of the room, which helps the AI model give an accurate prediction. In order to select the coordinates of where the room is located, simply click on the map on the location of the relevant building, the map can be dragged around and zoomed in/out. The month of the year field specifies for which month of the year to predict energy consumption. If the number `6` is supplied, the energy consumption will be calculated for the month of june. Lastly, in order to get an estimation simply click the button below that says `Predict Energy Consumption`. After waiting a second for the model to finish calculations, a field should appear below the button, with the predictions for heat consumed for that month. More information about the AI model is at the bottom of the page"))
+    st.markdown(trans("Use the displayed sliders and input boxes to select the various metrics of the room, which helps the AI model give an accurate prediction. In order to select the coordinates of where the room is located, simply click on the map on the location of the relevant building, the map can be dragged around and zoomed in/out. The month of the year field specifies for which month of the year to predict energy consumption. If the number `6` is supplied, the energy consumption will be calculated for the month of June. Lastly, in order to get an estimation, click the 'Predict Energy Consumption' button after adjusting all inputs. After waiting a second for the model to finish calculations, a field should appear below the button with the predictions for heat consumed for that month. More information about the AI model is at the bottom of the page"))
 
     st.markdown(
         f"""
@@ -682,108 +676,119 @@ with tab4:
         unsafe_allow_html=True
     )
 
-    st.markdown(f"### {trans('Please enter the required information')}")
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        features["legal_entity"] = st.checkbox(trans("Is the buyer a legal entity?"))
-        features["building_floors"] = st.slider(
-            trans("Number of floors in the building"),
-            min_value=1,
-            max_value=15,
-            step=1,
-            value=5
-        )
-        features["room_area"] = st.number_input(
-            trans("Room area, m²"),
-            min_value=0.0,
-            max_value=40000.0,
-            value=50.0,
-            step=10.0,
-            format="%.1f"
-        )
-
-    with col2:
-        features["build_year"] = st.number_input(
-            trans("Year that the building was built"),
-            min_value=1849,
-            step=1,
-            value=1970
-        )
-        features["month"] = st.number_input(
-            trans("Month of the year (1-12)"),
-            min_value=1,
-            max_value=12,
-            step=1
-        )
-        building_func_options_lt = [
-        "Transporto", "Maitinimo", "Gyvenamasis (individualus pastatas)", "Gydymo",
-        "Religinės", "Kita", "Administracinė", "Kultūros", "Gamybos",
-        "Gyvenamasis (trijų ir daugiau butų - daugiaaukštis pastatas)", "Prekybos",
-        "Sporto", "Komercinės paskirties", "Mokslo", "Viešbučių", "Sandėliavimo"
-        ]
-        # Display options based on language
-        if lang == "English":
-            building_func_options_display = [building_func_translations.get(func, func) for func in building_func_options_lt]
-        else:
-            building_func_options_display = building_func_options_lt
-        selected_display = st.selectbox(
-            trans("Building function"),
-            building_func_options_display
-        )
-        # Map back to Lithuanian for model input
-        if lang == "English":
-            features["building_func"] = next(
-                key for key, value in building_func_translations.items() if value == selected_display
-            )
-        else:
-            features["building_func"] = selected_display
-
-    with col3:
-        from pyproj import Transformer
-        transformer = Transformer.from_crs("epsg:4326", "epsg:3346", always_xy=True)
+    col10, col20 = st.columns([2, 1])
+    
+    with col20:
+        # Map outside the form for coordinate selection
         st.subheader(trans("Select Coordinates"))
-        map_center = [55.9292, 23.3102]
-        map_obj = folium.Map(location=map_center, zoom_start=12)
-        folium.Marker(location=map_center).add_to(map_obj)
+        map_center = [55.9292, 23.3102]  # Default center
+        if "map_center" not in st.session_state:
+            st.session_state.map_center = map_center
+        map_obj = folium.Map(location=st.session_state.map_center, zoom_start=12)
+        folium.Marker(location=st.session_state.map_center).add_to(map_obj)
         folium.LatLngPopup().add_to(map_obj)
         map_data = st_folium(map_obj, height=300, width=300)
-        x_coord, y_coord = map_center[0], map_center[1]
         if map_data and "last_clicked" in map_data and map_data["last_clicked"]:
-            x_coord, y_coord = map_data["last_clicked"]["lat"], map_data["last_clicked"]["lng"]
-            x_coord, y_coord = transformer.transform(y_coord, x_coord)
-            features["x_coord"] = x_coord
-            features["y_coord"] = y_coord
+            lat, lon = map_data["last_clicked"]["lat"], map_data["last_clicked"]["lng"]
+            x_coord, y_coord = transformer.transform(lon, lat)
+            st.session_state.x_coord = x_coord
+            st.session_state.y_coord = y_coord
+            st.session_state.map_center = [lat, lon]  # Update map center to last clicked location
 
-    st.markdown(
-        """
-        <style>
-        div.stButton > button:first-child {
-            height: 3em;
-            width: 100%;
-            font-size: 20px;
-            margin-top: 20px;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
+    with col10:
+        # Form for other inputs
+        st.markdown(f"### {trans('Please enter the required information')}")
+        with st.form(key="prediction_form"):
+            col1, col2 = st.columns(2)  # Reduced to 2 columns since map is outside
 
-    if st.button(trans("Predict Energy Consumption")):
-        preds_heat = get_prediction([features.values()])
-        st.markdown(
-            f"""
-            <div style='background-color: #f8f9fa; padding: 20px; border-radius: 10px; margin-top: 20px;'>
-                <h3 style='color: #2c3e50;'>{trans('Prediction Results')}</h3>
-                <div style='background-color: #e8f5e9; padding: 15px; border-radius: 8px; width: 100%;'>
-                    <h4 style='color: #2ecc71; margin: 0;'>{trans('Heat Consumption')}</h4>
-                    <p style='font-size: 24px; color: #2ecc71; margin: 5px 0 0 0;'>{float(preds_heat):.2f} kWh / {trans('month')}</p>
+            with col1:
+                legal_entity = st.checkbox(trans("Is the buyer a legal entity?"), value=False)
+                building_floors = st.slider(
+                    trans("Number of floors in the building"),
+                    min_value=1,
+                    max_value=15,
+                    step=1,
+                    value=5
+                )
+                room_area = st.number_input(
+                    trans("Room area, m²"),
+                    min_value=0.0,
+                    max_value=40000.0,
+                    value=50.0,
+                    step=10.0,
+                    format="%.1f"
+                )
+
+            with col2:
+                build_year = st.number_input(
+                    trans("Year that the building was built"),
+                    min_value=1849,
+                    step=1,
+                    value=1970
+                )
+                month = st.number_input(
+                    trans("Month of the year (1-12)"),
+                    min_value=1,
+                    max_value=12,
+                    step=1,
+                    value=1
+                )
+                building_func_options_lt = [
+                    "Transporto", "Maitinimo", "Gyvenamasis (individualus pastatas)", "Gydymo",
+                    "Religinės", "Kita", "Administracinė", "Kultūros", "Gamybos",
+                    "Gyvenamasis (trijų ir daugiau butų - daugiaaukštis pastatas)", "Prekybos",
+                    "Sporto", "Komercinės paskirties", "Mokslo", "Viešbučių", "Sandėliavimo"
+                ]
+                if lang == "English":
+                    building_func_options_display = [building_func_translations.get(func, func) for func in building_func_options_lt]
+                else:
+                    building_func_options_display = building_func_options_lt
+                selected_display = st.selectbox(
+                    trans("Building function"),
+                    building_func_options_display,
+                    index=building_func_options_lt.index("Gyvenamasis (trijų ir daugiau butų - daugiaaukštis pastatas)")
+                )
+                # Map back to Lithuanian for model input
+                if lang == "English":
+                    building_func = next(
+                        key for key, value in building_func_translations.items() if value == selected_display
+                    )
+                else:
+                    building_func = selected_display
+
+            # Submit button
+            submit_button = st.form_submit_button(trans("Predict Energy Consumption"))
+
+    # Prediction logic after form submission
+    if submit_button:
+        if "x_coord" not in st.session_state or "y_coord" not in st.session_state:
+            st.error(trans("Please select coordinates on the map."))
+        else:
+            features = {
+                "legal_entity": legal_entity,
+                "month": month,
+                "room_area": room_area,
+                "build_year": build_year,
+                "building_floors": building_floors,
+                "building_func": building_func,
+                "x_coord": st.session_state.x_coord,
+                "y_coord": st.session_state.y_coord
+            }
+            preds_heat = get_prediction([list(features.values())])
+            st.markdown(
+                f"""
+                <div style='background-color: #f8f9fa; padding: 20px; border-radius: 10px; margin-top: 20px;'>
+                    <h3 style='color: #2c3e50;'>{trans('Prediction Results')}</h3>
+                    <div style='background-color: #e8f5e9; padding: 15px; border-radius: 8px; width: 100%;'>
+                        <h4 style='color: #2ecc71; margin: 0;'>{trans('Heat Consumption')}</h4>
+                        <p style='font-size: 24px; color: #2ecc71; margin: 5px 0 0 0;'>{float(preds_heat):.2f} kWh / {trans('month')}</p>
+                    </div>
                 </div>
-            </div>
-            """,
-            unsafe_allow_html=True
+                """,
+                unsafe_allow_html=True
             )
 
+    # Technical description remains unchanged
     st.markdown(f"### {trans('Technical description of the AI model')}")
     st.markdown(f"""
     ### 1. {trans('The data')}
