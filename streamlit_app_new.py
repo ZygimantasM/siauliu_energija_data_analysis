@@ -48,7 +48,7 @@ lt_mappings = {
     "Biggest room area": "Didžiausias patalpos plotas",
     "## Number of Rooms per buyer, Top 20 buyers": "## Skaičius Patalpų priklausančių kiekvienam pirkėjui, Top 20 pirkėjų",
     "## Average Heat Consumption / m² by buildings build year": "## Vidutinis Šilumos suvartojimas / m² pagal pastato statybos metus",
-    "Over time we can see that heat consumption decreases as buildings get younger, which can be attributed to better construction and insulation technology. Specifically buildings built after 1940 and then 2000 have lower consumption heat consumption on average": "Laikui bėgant, matome, kad šilumos suvartojimas mažėja, kai pastatai tampa naujesni, o tai galima priskirti geresnei statybos ir izoliacijos technologijai. Konkrečiai, pastatai, pastatyti po 1940 m. ir tada po 2000 m., vidutiniškai turi mažesnį šilumos suvartojimą.",
+    "Over time we can see that heat consumption decreases as buildings get younger, which can be attributed to better construction and insulation technology. Specifically buildings built after 1940 and then 2000 have lower heat consumption on average": "Laikui bėgant, matome, kad šilumos suvartojimas mažėja, kai pastatai tampa naujesni, o tai galima priskirti geresnei statybos ir izoliacijos technologijai. Konkrečiai, pastatai, pastatyti po 1940 m. ir tada po 2000 m., vidutiniškai turi mažesnį šilumos suvartojimą.",
     "# Oldest building was built in -- 1849": "# Seniausias pastatas buvo pastatytas -- 1849 m.",
     "# Most frequent build year -- 1970 (1924 buildings)": "# Dažniausiai pasirodantys statybos metai -- 1970 m. (1924 Pastatų)",
     "## Geospatial building age heatmap": "## Geografinis pastatų amžiaus šiluminis žemėlapis",
@@ -579,7 +579,7 @@ with tab3:
     )
 
     st.write(trans("## Average Heat Consumption / m² by buildings build year"))
-    st.write(trans("Over time we can see that heat consumption decreases as buildings get younger, which can be attributed to better construction and insulation technology. Specifically buildings built after 1940 and then 2000 have lower consumption heat consumption on average"))
+    st.write(trans("Over time we can see that heat consumption decreases as buildings get younger, which can be attributed to better construction and insulation technology. Specifically buildings built after 1940 and then 2000 have lower heat consumption on average"))
     heat_by_build_year = load_heat_by_build_year()
     st.bar_chart(
         heat_by_build_year,
